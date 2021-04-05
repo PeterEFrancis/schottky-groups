@@ -40,9 +40,13 @@
 [[-1, -1], 1]; [[1,1], 1]</textarea>
   <br><br>
   <label>
-    Smallest Radius:
-    <input id="smallest-radius" type="number" placeholder="0.05" value="0.05" step="0.001" min="0.00000001"></input>
+    Smallest Radius: <input id="smallest-radius" type="number" placeholder="0.05" value="0.05" step="0.001" min="0.00000001"></input>
   </label>
+  <br><br>
+  <label>
+    Zoom: <input id="zoom" type="number" placeholder="100" value="100"></input>
+  </label>
+  <br><br>
     <br><br>
     <button id="btn" onclick="make_schottky_image()">Make Image!</button>
     <img id="loading" src="loading.gif" style="height: 1em;" hidden/>
@@ -51,11 +55,15 @@
 
 
   <script>
-    let geoSVG = new GeoSVG(document.getElementById('A'), {zoom:100});
+    var geoSVG;
 
     var worker;
 
     function make_schottky_image() {
+
+      let geoSVG = new GeoSVG(document.getElementById('A'), {
+        zoom: Number(document.getElementById('zoom').value)
+      });
 
       document.getElementById('loading').hidden = false;
       document.getElementById('btn').disabled = true;
