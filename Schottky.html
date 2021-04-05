@@ -1,0 +1,120 @@
+<html>
+  <head>
+    <style>
+      #A {
+        width: 700px;
+        height: 700px;
+        border: 1px solid black;
+      }
+      textarea {
+        resize: vertical;
+        height: 100px;
+        font-style: monospace;
+      }
+    </style>
+
+    <script src="GeoSVG.js"></script>
+
+  </head>
+
+  <body>
+    <h1>Schottky Group Orbits</h1>
+    <svg id="A"></svg>
+    <p>Enter pairs of circles, separated by new lines. Example of a circle: [[cx, cy], r]</p>
+    <textarea id="input" style="width: 702px;">
+[[-1, 1], 1]; [[1, -1], 1]
+[[-1, -1], 1]; [[1,1], 1]
+</textarea>
+<br><br>
+<button onclick="make_schottky_image()">Make Image!</button>
+    <p id="error" style="color: red"></p>
+  </body>
+
+
+  <script>
+    let geoSVG = new GeoSVG(document.getElementById('A'), {zoom:100});
+
+    function make_schottky_image() {
+      document.getElementById('error').innerHTML = "";
+      let base_circles = [];
+      try {
+        let input_circles = document.getElementById('input').value
+          .trim()
+          .split('\n')
+          .map(line => line.split(';').map(list => JSON.parse(list.trim())));
+        for (let i = 0; i < input_circles.length; i++) {
+          base_circles[i] = [];
+          for (let j = 0; j < 2; j++) {
+            let circle = {
+              center: {x: input_circles[i][j][0][0], y: input_circles[i][j][0][1]},
+              radius: input_circles[i][j][1]
+            };
+            base_circles[i].push(circle);
+          }
+        }
+      } catch (e) {
+        document.getElementById('error').innerHTML = e;
+        return;
+      }
+
+      // use base_circles to make a new image
+      geoSVG.clear();
+
+      // build pairing mobius transformations based on the circles, and start stack
+      let transformations = [];
+      let inverse = [];
+      let stack = [];
+      for (let i = 0; i < base_circles.length; i++) {
+        let pair = base_circles[i];
+        const p = pair[0].center;
+        const q = pair[1].center;
+        const r = pair[0].radius;
+        const s = pair[1].radius;
+        transformations.push(function(z) {
+          return add(divide({x:-r*s, y:0}, conjugate(subtract(z, p))), q);
+        });
+        transformations.push(function(z) {
+          return add(divide({x:-r*s, y:0}, conjugate(subtract(z, q))), p);
+        });
+        stack.push({
+          depth: 0,
+          circle: pair[0],
+          last: 2 * i
+        });
+        stack.push({
+          depth: 0,
+          circle: pair[1],
+          last: 2 * i + 1
+        });
+        inverse[2 * i] = 2 * i + 1;
+        inverse[2 * i + 1] = 2 * i;
+      }
+
+
+      // fixed depth first tree expansion of free group
+      while (stack.length > 0) {
+        let node = stack.pop();
+        if (node.depth == 10) continue;
+        // otherwise, add more circles
+        for (let i = 0; i < transformations.length; i++) {
+          if (inverse[i] != node.last && inverse[node.last] != i) {
+            let circle = clone(node.circle);
+            geoSVG.add_circle(circle);
+            if (circle.radius > 0.05) { // prune small circles
+              stack.push({
+                depth: node.depth + 1,
+                circle: transform_circle(transformations[i], circle),
+                last: i
+              });
+            }
+          }
+        }
+      }
+    }
+
+    make_schottky_image();
+
+  </script>
+
+
+</html>
