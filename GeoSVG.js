@@ -1,4 +1,6 @@
 
+"use strict";
+
 // complex operations
 function add(a,b) {
   return {
@@ -76,8 +78,9 @@ function distance(p1, p2) {
   return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
 }
 
-function do_circles_intersect(c1, c2) {
-  return c1.radius + c2.radius < distance(c1.center, c2.center);
+function do_circles_overlap(c1, c2) {
+  console.log()
+  return c1.radius + c2.radius > distance(c1.center, c2.center);
 }
 
 
@@ -128,7 +131,6 @@ class GeoSVG {
     return circle_dom;
   }
 
-
 }
 
 
@@ -148,6 +150,14 @@ const COMP_PURPOSES  = {
         base_circles[i].push(circle);
       }
     }
+
+    // check that no pairs intersect
+    for (let i = 0; i < base_circles.length; i++) {
+      if (do_circles_overlap(...base_circles[i])) {
+        throw "Circles " + JSON.stringify(input_circles[i][0]) + ' and ' + JSON.stringify(input_circles[i][1]) + " overlap";
+      }
+    }
+
 
     // build pairing mobius transformations based on the circles, and start stack
     let transformations = [];

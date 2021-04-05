@@ -72,14 +72,13 @@
 
       worker.onmessage = function(msg) {
         if (msg.data.type == 'error') {
-          document.getElementById('error').innerHTML = msg.data.error.stack.replaceAll('\n','<br>');
+          document.getElementById('error').innerHTML = msg.data.error;
+          document.getElementById('loading').hidden = true;
+          document.getElementById('btn').disabled = false;
           console.log(msg.data.msg);
         } else if (msg.data.type == 'update') {
           geoSVG.add_circle(msg.data.circle);
         } else { // complete
-          // for (let circle of msg.data.res) {
-          //   geoSVG.add_circle(circle);
-          // }
           document.getElementById('loading').hidden = true;
           document.getElementById('btn').disabled = false;
         }
