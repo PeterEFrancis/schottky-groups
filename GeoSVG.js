@@ -72,6 +72,13 @@ function transform_circle(transformation, circle) {
   );
 }
 
+function distance(p1, p2) {
+  return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
+}
+
+function do_circles_intersect(c1, c2) {
+  return c1.radius + c2.radius < distance(c1.center, c2.center);
+}
 
 
 class GeoSVG {
@@ -113,7 +120,7 @@ class GeoSVG {
     circle_dom.setAttribute('cy', hk.k);
     circle_dom.setAttribute('r', args.radius * this.zoom);
     circle_dom.setAttribute('stroke', args.stroke || "black");
-    circle_dom.setAttribute('stroke-width', args.stroke_width || 1);
+    circle_dom.setAttribute('stroke-width', args.stroke_width || 0.1);
     circle_dom.setAttribute('fill', args.fill || "transparent");
 
     this.dom.appendChild(circle_dom);
@@ -122,4 +129,101 @@ class GeoSVG {
   }
 
 
+}
+
+
+
+
+const COMP_PURPOSES  = {
+  'schottky': function(info) {
+    let input_circles = info.input_circles;
+    let base_circles = [];
+    for (let i = 0; i < input_circles.length; i++) {
+      base_circles[i] = [];
+      for (let j = 0; j < 2; j++) {
+        let circle = {
+          center: {x: input_circles[i][j][0][0], y: input_circles[i][j][0][1]},
+          radius: input_circles[i][j][1]
+        };
+        base_circles[i].push(circle);
+      }
+    }
+
+    // build pairing mobius transformations based on the circles, and start stack
+    let transformations = [];
+    let inverse = [];
+    let queue = [];
+    for (let i = 0; i < base_circles.length; i++) {
+      let pair = base_circles[i];
+      const p = pair[0].center;
+      const q = pair[1].center;
+      const r = pair[0].radius;
+      const s = pair[1].radius;
+      transformations.push(function(z) {
+        return add(divide({x:-r*s, y:0}, conjugate(subtract(z, p))), q);
+      });
+      transformations.push(function(z) {
+        return add(divide({x:-r*s, y:0}, conjugate(subtract(z, q))), p);
+      });
+      queue.push({
+        depth: 0,
+        circle: pair[0],
+        last: 2 * i
+      });
+      queue.push({
+        depth: 0,
+        circle: pair[1],
+        last: 2 * i + 1
+      });
+      inverse[2 * i] = 2 * i + 1;
+      inverse[2 * i + 1] = 2 * i;
+    }
+
+    // let all_circles = [];
+    // fixed depth first tree expansion of free group
+    while (queue.length > 0) {
+      let node = queue.shift();
+      // if (node.depth == 10) continue;
+      for (let i = 0; i < transformations.length; i++) {
+        if (inverse[i] != node.last && inverse[node.last] != i) {
+          let circle = clone(node.circle);
+
+          self.postMessage({
+            type: 'update',
+            circle: circle
+          })
+
+          // all_circles.push(circle);
+
+          if (circle.radius > info.smallest_radius) { // prune small circles
+            queue.push({
+              depth: node.depth + 1,
+              circle: transform_circle(transformations[i], circle),
+              last: i
+            });
+          }
+        }
+      }
+    }
+    // return all_circles;
+  }
+}
+
+
+
+
+self.onmessage = function(msg) {
+  try {
+    const data = msg.data;
+    self.postMessage({
+      type: 'complete',
+      res: COMP_PURPOSES[data.purpose](data.info)
+    });
+  } catch (e) {
+    self.postMessage({
+      type: 'error',
+      msg: e.message,
+      error: e
+    });
+  }
 }
