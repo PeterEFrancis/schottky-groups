@@ -1,6 +1,4 @@
 
-"use strict";
-
 // complex operations
 function add(a,b) {
   return {

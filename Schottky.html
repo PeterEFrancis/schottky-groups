@@ -3,6 +3,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- FileSaver -->
+    <script src="FileSaver.js"></script>
+
 
     <style>
       #A {
@@ -42,10 +45,10 @@
   Node Pruning Method:
   <ul style="list-style-type: none;">
     <li>
-      <label> <input type="checkbox" value="smallest-radius" id="cb1" checked> Smallest Radius: <input id="smallest-radius" type="number" placeholder="0.01" value="0.01" step="0.001" min="0.00000001"></input></label>
+      <label> <input type="checkbox" value="smallest-radius" id="cb1" checked disabled onchange="fix_cb()"> Smallest Radius: <input id="smallest-radius" type="number" placeholder="0.01" value="0.01" step="0.001" min="0.00000001"></input></label>
     </li>
     <li>
-      <label> <input type="checkbox" value="depth" id="cb2"> Depth: <input id="depth" type="number" placeholder="5" value="5"></input></label>
+      <label> <input type="checkbox" value="depth" id="cb2" onchange="fix_cb()"> Depth: <input id="depth" type="number" placeholder="5" value="5"></input></label>
     </li>
     <!-- <li>
       <label> Time (s): <input id="time" type="number" placeholder="60" value="60"></input></label>
@@ -53,7 +56,7 @@
   </ul>
   <br>
   <label>
-    Zoom: <input id="zoom" type="number" placeholder="100" value="100"></input>
+    Zoom: <input id="zoom" type="number" placeholder="140" value="140"></input>
   </label>
   <br><br>
   <label>
@@ -63,6 +66,7 @@
     <button id="btn" onclick="make_schottky_image()">Make Image!</button>
     <img id="loading" src="loading.gif" style="height: 1em;" hidden/>
     <p id="error" style="color: red"></p>
+    <button onclick="SaveAsFile(get_svg_contents(), 'Schottky Orbit ' + (new Date().toUTCString()) + '.svg')">Download Image</button>
   </body>
 
 
@@ -143,6 +147,17 @@
 
 
 
+    }
+
+    function get_svg_contents() {
+      return '<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 700 700" id="svg3013" version="1.1" inkscape:version="0.48.3.1 r9886" width="100%" height="100%" sodipodi:docname="test.svg">' + geoSVG.dom.innerHTML + '</svg>';
+    }
+
+    function fix_cb() {
+      let cb1 = document.getElementById('cb1');
+      let cb2 = document.getElementById('cb2');
+      cb1.disabled = !cb2.checked;
+      cb2.disabled = !cb1.checked;
     }
 
   </script>
