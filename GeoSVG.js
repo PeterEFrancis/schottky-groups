@@ -126,6 +126,18 @@ class GeoSVG {
     circle_dom.setAttribute('stroke-width', args.stroke_width || 0.1);
     circle_dom.setAttribute('fill', args.fill || "transparent");
 
+    // const cent = args.center;
+    // const rad = args.radius;
+    // circle_dom.onmousedown = function() {
+    //   circle_dom.setAttribute('fill', "red");
+    // }
+    // circle_dom.onmouseup = function() {
+    //   circle_dom.setAttribute('fill', args.fill || "transparent");
+    // }
+    // circle_dom.onmouseleave = function() {
+    //   circle_dom.setAttribute('fill', args.fill || "transparent");
+    // }
+
     this.dom.appendChild(circle_dom);
 
     return circle_dom;
@@ -189,33 +201,31 @@ const COMP_PURPOSES  = {
       inverse[2 * i + 1] = 2 * i;
     }
 
-    // let all_circles = [];
-    // fixed depth first tree expansion of free group
+    // breadth first tree expansion of free group
     while (queue.length > 0) {
+
       let node = queue.shift();
-      // if (node.depth == 10) continue;
+
+      let circle = node.circle;
+
+      if (info.methods.includes('depth') && node.depth === info.depth) continue;
+      if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
+
+      self.postMessage({
+        type: 'update',
+        circle: circle
+      })
+
       for (let i = 0; i < transformations.length; i++) {
         if (inverse[i] != node.last && inverse[node.last] != i) {
-          let circle = clone(node.circle);
-
-          self.postMessage({
-            type: 'update',
-            circle: circle
-          })
-
-          // all_circles.push(circle);
-
-          if (circle.radius > info.smallest_radius) { // prune small circles
-            queue.push({
-              depth: node.depth + 1,
-              circle: transform_circle(transformations[i], circle),
-              last: i
-            });
-          }
+          queue.push({
+            depth: node.depth + 1,
+            circle: transform_circle(transformations[i], circle),
+            last: i
+          });
         }
       }
     }
-    // return all_circles;
   }
 }
 
