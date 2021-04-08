@@ -1,4 +1,92 @@
-<h1>Kleinian Group Tools</h1>
-<ul>
-  <li><a href="Schottky.html">Schottky Group</a></li>
-</ul>
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>HTMLTeX Exmple</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- MathJax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
+
+    <!-- LaTeXer -->
+    <!-- <script src="../HTMLTeX.js"></script>
+    <link rel="stylesheet" href="../HTMLTeX.css"> -->
+
+    <script src="https://PeterEFrancis.com/HTMLTeX/HTMLTeX.js"></script>
+    <link rel="stylesheet" href="https://PeterEFrancis.com/HTMLTeX/HTMLTeX.css">
+
+    <style>
+      body {
+        max-width: 700px;
+        margin: auto;
+        padding: 20px;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div id="LaTeX">
+      <div hidden>
+      \(
+        \newcommand{\R}{\mathbb{R}}
+        \newcommand{\N}{\mathbb{N}}
+      \)
+      </div>
+
+      <h1>The Beauty of Kleinian Groups</h1>
+      <em>Katelin Beach and Peter E. Francis</em>
+      <hr>
+      <tableofcontents></tableofcontents>
+      <hr>
+
+      <section id="introduction">Introduction</section>
+
+
+
+
+
+
+
+
+      <section id="introduction">Schottky Groups</section>
+
+      Given two circles, there are a loxodromic transformations that map the exterior of one to the interior of the other. These two functions are inverses. If the two circles have centers $p_1$ and $p_2$, and radii $r_1$ and $r_2$, then the transformations $T$ and $T^{-1}$ get the job done, where
+      $$T(z) = \frac{-r_1r_2}{\overline{z-p_1}} + p_2.$$
+
+
+
+      <a href="Schottky.html" class="highlight">See visual</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+  </body>
+
+  <script type="text/x-mathjax-config">
+    new HTMLTeX(document.getElementById('LaTeX'), MathJax).render({
+      'highlight_links':true
+    });
+  </script>
+
+</html>
