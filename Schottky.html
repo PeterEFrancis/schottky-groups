@@ -39,8 +39,8 @@
     <svg id="A"></svg>
     <p>Enter pairs of circles, separated by new lines. Example of a circle: [[cx, cy], r]</p>
     <textarea id="input">
-[[-1, 1], 1]; [[1, -1], 1]
-[[-1, -1], 1]; [[1, 1], 1]</textarea>
+[[-1, -1], 1]; [[1, -1], 1]
+[[0, -0.25], 0.25]; [[0, 1000], 1000]</textarea>
   <br><br>
   Node Pruning Method:
   <ul style="list-style-type: none;">
@@ -117,9 +117,13 @@
           document.getElementById('error').innerHTML = msg.data.error;
           document.getElementById('loading').hidden = true;
           document.getElementById('btn').disabled = false;
-          console.log(msg.data.msg);
+          console.log(msg.data.error);
         } else if (msg.data.type == 'update') {
-          geoSVG.add_circle(msg.data.circle);
+          if ('circle' in msg.data) {
+            geoSVG.add_circle(msg.data.circle, {color: msg.data.color});
+          } else {
+            geoSVG.add_point(msg.data.point, msg.data.color);
+          }
         } else { // complete
           document.getElementById('loading').hidden = true;
           document.getElementById('btn').disabled = false;

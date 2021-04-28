@@ -1,4 +1,15 @@
 
+const INFINITY = 999999;
+
+
+function re(x) {
+  return {x:x, y:0};
+}
+
+function norm(p) {
+  return Math.sqrt(p.x**2 + p.y**2);
+}
+
 // complex operations
 function add(a,b) {
   return {
@@ -15,7 +26,7 @@ function multiply(a,b) {
 function divide(a,b) {
   return {
     x: (a.x * b.x + a.y * b.y) / (b.x**2 + b.y**2),
-    y: (a.y * b.y - a.x * b.y) / (b.x**2 + b.y**2)
+    y: (a.y * b.x - a.x * b.y) / (b.x**2 + b.y**2)
   };
 }
 function negate(a) {
@@ -35,6 +46,23 @@ function conjugate(a) {
     x: a.x,
     y: -a.y
   };
+}
+function squareroot(a) {
+  let r = norm(a);
+  let a_hat = divide(a, re(r));
+  let theta = Math.acos(a_hat.x);
+  return multiply(re(Math.sqrt(r)), {
+    x: Math.cos(theta / 2),
+    y: Math.sin(theta / 2)
+  })
+}
+
+
+function distance(p1, p2) {
+  return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
+}
+function midpoint(p1, p2) {
+  return divide(add(p1, p2), {x:2, y:0});
 }
 
 
@@ -72,14 +100,132 @@ function transform_circle(transformation, circle) {
   );
 }
 
-function distance(p1, p2) {
-  return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
-}
-
 function do_circles_overlap(c1, c2) {
   console.log()
   return c1.radius + c2.radius > distance(c1.center, c2.center);
 }
+
+function get_inverting_cline(c1, c2) {
+  if (c1.radius == c2.radius) {
+    // return line
+    return {
+      radius: Infinity,
+      center: Infinity,
+      slope: -1/((c1.center.y - c2.center.y) / (c1.center.x - c2.center.x)),
+      point: midpoint(c1.center, c2.center)
+    };
+  } else {
+    let A = c1.center;
+    let a = c1.radius;
+    let B = c2.center;
+    let b = c2.radius;
+    // circle
+    return {
+      center: add(A, divide(subtract(B, A), re((a - b)/a))),
+      radius: Math.sqrt((a * b * distance(A, B)**2)/((a - b) ** 2) - (a * b))
+    };
+  }
+}
+
+
+
+function invert(c) {
+  if (c.center == Infinity) { // line
+    const theta = Math.atan(c.slope);
+    const point = c.point;
+    return function(z) {
+      return add(point, rotate(theta)(conjugate(rotate(-theta)(subtract(z, point)))));
+    }
+  }
+  // circle
+  const center = c.center;
+  const r = c.radius;
+  return function(z) {
+    return add(divide(re(r**2), conjugate(subtract(z, center))), center);
+  }
+}
+
+function rotate(theta_) {
+  const theta = theta_;
+  return function(z) {
+    return multiply({x: Math.cos(theta), y: Math.sin(theta)}, z);
+  }
+}
+
+function D_automorphism(z0_, theta_) { // hyperbolic transformation
+  const z0 = z0_;
+  const theta = theta_;
+  return function(z) {
+    return rotate(theta)(divide(subtract(z, z_0), subtract(re(1), multiply(z, conjugate(z0)))));
+  }
+}
+
+
+function pairing(c1_, c2_) { // z0_, theta_
+  const c1 = c1_;
+  const c2 = c2_;
+  // const z0 = z0_;
+  // const theta = theta_;
+  const ic = get_inverting_cline(c1, c2);
+  return [
+    function(z) {
+      return invert(ic)(invert(c1)(z));
+    },
+    function(z) {
+      return invert(ic)(invert(c2)(z));
+    }
+  ]
+}
+
+
+function get_transformations(pairs) {
+  let transformations = [];
+  for (let i = 0; i < pairs.length; i++) {
+    let pair = pairs[i];
+    const p = pair[0].center;
+    const q = pair[1].center;
+    const r = pair[0].radius;
+    const s = pair[1].radius;
+    transformations.push(...pairing({center: p, radius: r}, {center: q, radius: s}));
+  }
+  return transformations;
+}
+
+
+function get_fixed_points(tr) {
+  let z1 = tr({x:1, y:0}),
+      z2 = tr({x:0, y:0}),
+      z3 = tr({x:INFINITY, y:INFINITY});
+  let a = subtract(z1, z3),
+      b = multiply(z2, subtract(z3, z1)),
+      c = subtract(z1, z2),
+      d = multiply(z3, subtract(z2, z1));
+  if (c.x != 0 || c.y != 0) {
+    // c != 0, so tr has two fixed points
+    let sq = squareroot(
+      add(
+        multiply(
+          subtract(a, d),
+          subtract(a, d)
+        ),
+        multiply(re(4), multiply(b, c))
+      )
+    );
+    return [
+      divide(add(subtract(a, d), sq), multiply(re(2), c)),
+      divide(subtract(subtract(a, d), sq), multiply(re(2), c))
+    ];
+  } else {
+    return [{x:INFINITY, y: INFINITY}, divide(negate(b), subtract(a, d))];
+  }
+}
+
+
+
+
+
+
+
 
 
 class GeoSVG {
@@ -109,18 +255,18 @@ class GeoSVG {
     this.dom.innerHTML = "";
   }
 
-  add_circle(args) {
+  add_circle(c, args) {
     args = args || {};
-    args.center = args.center || {x: 0, y: 0};
-    args.radius = args.radius || 1;
+    c.center = c.center || {x: 0, y: 0};
+    c.radius = c.radius || 1;
 
-    let hk = this.get_hk(args.center);
+    let hk = this.get_hk(c.center);
 
     let circle_dom = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle_dom.setAttribute('cx', hk.h);
     circle_dom.setAttribute('cy', hk.k);
-    circle_dom.setAttribute('r', args.radius * this.zoom);
-    circle_dom.setAttribute('stroke', args.stroke || "black");
+    circle_dom.setAttribute('r', c.radius * this.zoom);
+    circle_dom.setAttribute('stroke', args.color || "blue");
     circle_dom.setAttribute('stroke-width', args.stroke_width || 0.1);
     circle_dom.setAttribute('fill', args.fill || "transparent");
 
@@ -141,25 +287,51 @@ class GeoSVG {
     return circle_dom;
   }
 
+  add_point(p, color) {
+    this.add_circle(
+      {center: p, radius: 0.1 / this.zoom},
+      {color: color, fill: color}
+    );
+  }
+
 }
+
+
+function inverse_of(i) {
+  if (i % 2 == 0) {
+    return i + 1;
+  }
+  else {
+    return i - 1;
+  }
+}
+
+
+function parse_input(input_circles) {
+  let base_circles = [];
+  for (let i = 0; i < input_circles.length; i++) {
+    base_circles[i] = [];
+    for (let j = 0; j < 2; j++) {
+      let circle = {
+        center: {x: input_circles[i][j][0][0], y: input_circles[i][j][0][1]},
+        radius: input_circles[i][j][1]
+      };
+      base_circles[i].push(circle);
+    }
+  }
+  return base_circles;
+}
+
+
 
 
 
 
 const COMP_PURPOSES  = {
   'schottky': function(info) {
+    // get base circles
     let input_circles = info.input_circles;
-    let base_circles = [];
-    for (let i = 0; i < input_circles.length; i++) {
-      base_circles[i] = [];
-      for (let j = 0; j < 2; j++) {
-        let circle = {
-          center: {x: input_circles[i][j][0][0], y: input_circles[i][j][0][1]},
-          radius: input_circles[i][j][1]
-        };
-        base_circles[i].push(circle);
-      }
-    }
+    let base_circles = parse_input(input_circles);
 
     // check that no pairs intersect
     for (let i = 0; i < base_circles.length; i++) {
@@ -168,38 +340,23 @@ const COMP_PURPOSES  = {
       }
     }
 
+    // build pairing mobius transformations based on the circles
+    const transformations = get_transformations(base_circles);
+    function get_random_transformation(last) {
+      let new_t = Math.floor(Math.random() * transformations.length);
+      // while (last && (new_t == inverse_of(last))) {
+      //   new_t = Math.floor(Math.random() * transformations.length);
+      // }
+      return transformations[new_t];
+    }
 
-    // build pairing mobius transformations based on the circles, and start stack
-    let transformations = [];
-    let inverse = [];
+    // breadth first search through tree to make orbit of fomage
     let queue = [];
     for (let i = 0; i < base_circles.length; i++) {
       let pair = base_circles[i];
-      const p = pair[0].center;
-      const q = pair[1].center;
-      const r = pair[0].radius;
-      const s = pair[1].radius;
-      transformations.push(function(z) {
-        return add(divide({x:-r*s, y:0}, conjugate(subtract(z, p))), q);
-      });
-      transformations.push(function(z) {
-        return add(divide({x:-r*s, y:0}, conjugate(subtract(z, q))), p);
-      });
-      queue.push({
-        depth: 0,
-        circle: pair[0],
-        last: 2 * i
-      });
-      queue.push({
-        depth: 0,
-        circle: pair[1],
-        last: 2 * i + 1
-      });
-      inverse[2 * i] = 2 * i + 1;
-      inverse[2 * i + 1] = 2 * i;
+      queue.push({depth: 0, circle: pair[0], last: 2 * i});
+      queue.push({depth: 0, circle: pair[1], last: 2 * i + 1});
     }
-
-    // breadth first tree expansion of free group
     while (queue.length > 0) {
 
       let node = queue.shift();
@@ -207,15 +364,16 @@ const COMP_PURPOSES  = {
       let circle = node.circle;
 
       if (info.methods.includes('depth') && node.depth === info.depth) continue;
-      if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
+      // if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
 
       self.postMessage({
         type: 'update',
+        color: 'black',
         circle: circle
       })
 
       for (let i = 0; i < transformations.length; i++) {
-        if (inverse[i] != node.last && inverse[node.last] != i) {
+        if (inverse_of(i) != node.last && inverse_of(node.last) != i) {
           queue.push({
             depth: node.depth + 1,
             circle: transform_circle(transformations[i], circle),
@@ -224,6 +382,132 @@ const COMP_PURPOSES  = {
         }
       }
     }
+
+
+
+
+
+
+
+
+    // finding limit set
+
+
+
+
+    // chaos game
+    // let p = {x:1, y:0};
+    // for (let i = 0; i < 100; i++) {
+    //   p = get_random_transformation()(p);
+    // }
+    // for (let i = 0; i < 10000; i++) {
+    //   p = get_random_transformation()(p);
+    //   self.postMessage({
+    //     type: 'update',
+    //     color: 'red',
+    //     point: p
+    //   })
+    // }
+
+
+
+
+
+
+    // method 1
+    // let queue = [];
+    // for (let i = 0; i < base_circles.length; i++) {
+    //   let pair = base_circles[i];
+    //   queue.push({depth: 0, circle: pair[0], last: 2 * i});
+    //   queue.push({depth: 0, circle: pair[1], last: 2 * i + 1});
+    // }
+    // while (queue.length > 0) {
+    //   let node = queue.shift();
+    //   let circle = node.circle;
+    //   if (node.depth < 7) {
+    //     for (let i = 0; i < transformations.length; i++) {
+    //       if (inverse_of(i) != node.last && inverse_of(node.last) != i) {
+    //         queue.push({
+    //           depth: node.depth + 1,
+    //           circle: transform_circle(transformations[i], circle),
+    //           last: i
+    //         });
+    //       }
+    //     }
+    //   }
+    //   else if (node.circle.radius < 0.01) {
+    //     self.postMessage({
+    //       type: 'update',
+    //       color: 'red',
+    //       circle: circle
+    //     })
+    //   }
+    // }
+
+
+
+
+    // method 2
+    // let stack = [{depth: 0, point: {x:10, y:0}, last: -1}];
+    // while (stack.length > 0) {
+    //   let node = stack.pop();
+    //   if (node.depth == 7) {
+    //     self.postMessage({
+    //       type: 'update',
+    //       color: 'red',
+    //       point: node.point
+    //     })
+    //   } else {
+    //     for (let i = 0; i < transformations.length; i++) {
+    //       if (inverse_of(i) != node.last && inverse_of(node.last) != i) {
+    //         stack.push({
+    //           depth: node.depth + 1,
+    //           point: transformations[i](node.point),
+    //           last: i
+    //         });
+    //       }
+    //     }
+    //   }
+    // }
+
+
+
+
+    // method 3
+    // let fixed_points_ = transformations.map(x => get_fixed_points(x));
+    // let fixed_points = [];
+    // for (let pair of fixed_points_) {
+    //   fixed_points.push(...pair);
+    // }
+    // let stack = [[]];
+    // while (stack.length > 0) {
+    //   let ts = stack.pop();
+    //   if (ts.length == 7) {
+    //     for (let fp of fixed_points) {
+    //       let p = clone(fp);
+    //       for (let t of ts) {
+    //         p = transformations[t](p);
+    //       }
+    //       self.postMessage({
+    //         type: 'update',
+    //         color: 'red',
+    //         point: p
+    //       })
+    //     }
+    //   } else {
+    //     let last = ts[ts.length - 1];
+    //     for (let i = 0; i < transformations.length; i++) {
+    //       if (inverse_of(i) != last && inverse_of(last) != i) {
+    //         stack.push([...ts, i]);
+    //       }
+    //     }
+    //   }
+    // }
+
+
+
+
+
   }
 }
 
