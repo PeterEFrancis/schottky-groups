@@ -21,6 +21,9 @@
         margin: auto;
         padding: 20px;
       }
+      #LaTeX {
+        text-align: justify;
+      }
     </style>
 
   </head>
@@ -35,11 +38,12 @@
         \newcommand{\T}{\mathcal{T}}
         \newcommand{\O}{\mathcal{O}}
         \newcommand{\H}{\mathcal{H}}
+        \newcommand{\M}{\mathcal{M}}
       \)
       </div>
 
       <h1 style="text-align: center">The Beauty of Kleinian Groups</h1>
-      <em style="display: block; text-align: center">Katelin Beach and Peter E. Francis</em>
+      <em style="display: block; text-align: center">Katelin P. Beach and Peter E. Francis</em>
 
       <abstract><span style="color: red">Write this</span></abstract>
 
@@ -49,73 +53,119 @@
 
       <section id="introduction">Introduction</section>
 
-      <span style="color: red">Write this</span>
+      We are motivated by understanding the following picture from the perspective of transformational geometry.
+
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Apollonian_gasket.svg" style="width: 250px; display: block; margin: auto; cursor: pointer" onclick="window.open('https://commons.wikimedia.org/wiki/File:Apollonian_gasket.svg', '_blank');"/>
+      <center style="margin-bottom:30px">An Apollonian Gasket</center>
+
+      Recall that Möbius transformations $T$ are transformations of the extended complex plane (the Reimann Sphere) $\C^+$ of the form
+      $$T(z)=\frac{az+b}{cz+d}$$
+      for complex constants $a, b, c, d\in\C$ satisfying $ab-cd\neq 0$. These transformations form the Möbius group $\M$. Let $\M_1\leq M$ be the subgroup of transformations with determinant 1.
+
+      We know that $\M_1$ is normal since $\det:\M\to \R^*$ is a group homomorphism with kernel $\M_1$.
+
+      <span style="color:red">How do $\M$ and $\M_1$ relate to $\text{PSL}(2,\C)$?</span>
+
+      <section>Limit Sets of Kleinian Groups</section>
+
+      The study of Kleinian groups in generality started with Henri Poincaré and Felix Klein in 1883.
+
+      <definition title="Kleinian Group <cite to='ams'></cite>">
+        A <strong>Kleinian group</strong> is a discrete subgroup of $\text{PSL}(2,\C)$, the group of orientation-preserving conformal homeomorphisms of the extended complex plane, <span style="color:red"> and as the group of orientation-preserving isometries of hyperbolic 3-space.</span>
+      </definition>
+
+      <definition title="Kleinian Group <cite to='ucdavis'></cite>">
+        A <strong>Kleinian group</strong> is a discrete subgroup of the group of transformations on the Reimann Sphere.
+      </definition>
 
 
+      <definition title="Limit and Discontinuity Set <cite to='ams'></cite>" >
+        Given a Kleinian group $G$, we write $\Lambda(G)$ for its <strong>limit set</strong>, the set of limit points of the set $\{T(x)\mid T\in G\}$, <span style="color: red"> where $x$ is any point in hyperbolic three-space</span>. The complement of the limit set is called the <strong>discontinuity</strong> or <strong>regular set</strong> of $G$ and is denoted $\Omega(G)$.
+      </definition>
 
+
+      It is pointed out in <cite to="ams"></cite> that $\Lambda(G)$ is either
+     <ol>
+       <li>finite with cardinailty at most 2,</li>
+       <li>uncountably infinite and perfect nowhere dense, or</li>
+       <li>equal to $\C^+$.</li>
+     </ol>
+
+     We will build to some examples of the second case, which is clearly the most interesting and (perhaps, unsurprisingly) the most beautiful.
 
 
       <section id="pairing-clines">Pairing Clines</section>
 
-      It is important to keep in mind that because we are working in the extended complex plane (the Reimann Sphere), there is no real distinction between the "interior" and "exterior" of a cline. We are still going to use the words, but only to refer to opposite sides of a cline; it won't be confusing.
+      It is important to keep in mind that because we are working in the extended complex plane, there is no real distinction between the "interior" and "exterior" of a cline. We are still going to use the words, but only to refer to opposite sides of a cline; it won't be confusing.
 
       <definition>
-        Given two non-overlapping clines $C_1$ and $C_2$, a Möbius transformation that maps the exterior and interior of $C_1$ to the interior and exterior of $C_2$ is said to <b>pair the circles</b>. Specifically, if $T_2$ maps $C_1$ to $C_2$, then we say that $T_2$ pairs $C_1$ <b>to</b> $C_2$.
+        Given two non-overlapping clines $C$ and $C'$, a Möbius transformation that maps the exterior and interior of $C'$ to the interior and exterior of $C$ is said to <b>pair the circles</b>. Of course, then $T$ also maps $C'$ to $C$, and we say that $T$ pairs $C'$ <b>to</b> $C$.
       </definition>
 
-      Of course, this means that $T_2(C_1)=C_2$. The inverse map $T_1=T^{-1}$ acts similarly on $C_2$; this action is "symmetric."
+      The inverse map $T^{-1}$ acts similarly on $C$; this action is "symmetric."
 
       <lemma>
-        There is a unique cline $K(C_1, C_2)$ over which (by inversion) $C_1$ and $C_2$ are symmetric.
+        There is a unique cline $K(C, C')$ over which (by inversion) $C$ and $C'$ are symmetric.
       </lemma>
       <proof collapse="true" open="true">
         <span style="color: red">Write this</span>
       </proof>
 
-      Any transformation $T$ that pairs $C_1$ to $C_2$ can be written as the composition of the following maps:
+      Any transformation $T$ that pairs $C'$ to $C$ can be written as the composition of the following maps.
       <ul>
-        <li>Invert over $C_1$</li>
-        <li>Transform $C_1$ to the unit circle</li>
-        <li>Perform any transformation from the hyperbolic group (disk automorphism)</li>
-        <li>Transform the unit circle back to $C_1$</li>
-        <li>Invert over the cline $K(C_1,C_2)$</li>
+        <li>Invert over $C$.</li>
+        <li>Transform $C$ to the unit circle.</li>
+        <li>Perform any transformation from the hyperbolic group (disk automorphism).</li>
+        <li>Transform the unit circle back to $C$.</li>
+        <li>Invert over the cline $K(C,C')$.</li>
       </ul>
-      For now we will consider the case when the transformation chosen from the hyperbolic group is the identity. Algebraically, suppose $C_1$ and $C_2$ have centers $p_1$ and $p_2$, and radii $r_1$ and $r_2$. Then any function $T_2:\C^+\to\C^+$ that pairs $C_1$ to $C_2$ is of the form
+      For now we will consider the case when the transformation chosen from the hyperbolic group is the identity. Algebraically, suppose $C$ has centers $p$ and radius $r$. Then any function $T:\C^+\to\C^+$ that pairs $C'$ to $C$ is of the form
       <!-- \begin{align*}
         T_2(z) & = \left(I_{K(C_1, C_2)} \circ T_{p_1} \circ H_{r_1} \circ T_\H\circ H_{1/r_1}\circ T_{-p_1}\circ I_{C_1}\right)(z).
       \end{align*}
       Yikes. For right now, we'll consider the case when $T_\H$ is the identity, so -->
-      \begin{align*}
-        T_2(z) & = \left(I_{K(C_1, C_2)} \circ I_{C_1}\right)(z) \\
-               & = \frac{r_1^2}{\overline{\left(\frac{r_3^2}{\overline{z - p_3}} + p_3\right) - p_1}} + p_1 \\
-               & = \frac{r_1^2}{\frac{\overline{r_3^2}}{z - p_3} + \overline{p_3-p_1}} + p_1 \\
-               & = \frac{r_1^2(z-p_3)}{\overline{r_3^2} + (\overline{p_3-p_1})(z-p_3)} + p_1 \\
-               & = \dots \\
-               & = \left(\frac{r_1^2}{\overline{p_3-p_1}}+p_1\right)\frac{z - \left(\frac{r_1^2p_3+\overline{r_3^2} + p_3\left(\overline{p_3-p_1}\right)}{r_1^2+p_1\left(\overline{p_3-p_1}\right)}\right)}{z-\left(\frac{\overline{r_3^2} - p_3\left(\overline{p_3-p_1}\right)}{\overline{p_3-p_1}} \right)} \\
-      \end{align*}
-      where we define $C_{p_3}(r_3)=K(C_1, C_2)$.
+      $$T(z) = \left(I_{K(C, C')} \circ I_{C}\right)(z).$$
 
-      It is easy to see that $T_2$ is a loxodromic transformation, and that $C_1$ and $C_2$ are type II clines for the two fixed points of $T_2$.
+      <lemma>
+        The map $T$ is a loxodromic transformation, and the clines $C$ and $C'$ are type II for the two fixed points of $T$.
+      </lemma>
+      <proof collapse="true" open="true">
+        Define $C_{q}(s)=K(C, C')$. Then
+        \begin{align*}
+          T(z) & = \left(I_{K(C, C')} \circ I_{C}\right)(z) \\
+                 & = \frac{r^2}{\overline{\left(\frac{s^2}{\overline{z - q}} + q\right) - p}} + p \\
+                 & = \frac{r^2}{\frac{\overline{s^2}}{z - q} + \overline{q-p_1}} + p \\
+                 & = \frac{r^2(z-q)}{\overline{s^2} + (\overline{q-p})(z-q)} + p \\
+                 & = \dots \\
+                 & = \left(\frac{r^2}{\overline{q-p}}+p\right)\frac{z - \left(\frac{r^2q+\overline{s^2} + q\left(\overline{q-p}\right)}{r^2+p\left(\overline{q-p}\right)}\right)}{z-\left(\frac{\overline{s^2} - q\left(\overline{q-p}\right)}{\overline{q-p}} \right)},
+        \end{align*}
+        so $T$ is clearly loxodromic.
 
-      <span style="color:red">Show that the mess in the numerator is the image under inversion over $C_1$ of the mess in the denominator.</span>
+        <span style="color:red">Show that the mess in the numerator is the image under inversion over $C$ of the mess in the denominator.</span>
+      </proof>
+
+
+
 
       <section>Schottky Groups</section>
 
-      <definition title="Kleinian Groups <cite to='ucdavis'></cite>">
-        A <strong>Kleinian group</strong> is a discrete subgroup of the group of transformations on the Reimann Sphere.
+      Schottky groups are a common type of Kleinian group that were first studied by Friedrich Schottky in 1877.
+
+      <definition title="Schottky Group <cite to='ams'></cite>">
+        A <strong>Schottky group</strong> is a Kleinian group generated by transformations $T_1,\dots, T_n$ where there are $2n$ disjoint simple loops, $C_1, C_1',\dots,C_n, C_n'$, bounding a common domain $F$ in the extended complex plane $\C^+$, where $T_i(C_i') = C_i$, and $T_i(F)\cap F=\emptyset$, $i = 1,\dots,n$.
       </definition>
 
-      Consider a set $\mathcal{C}$ of $n$ pairs of non-intersecting clines:
-      $$\mathcal{C}=\{(C_{1,1},C_{2,1}),\dots, (C_{1,n},C_{2,n})\},$$
-      and the associated set of pairing transformations
-      $$\T=\{T_{2,1},\dots, T_{2,n}\}.$$
+      The loops $C_i$ and $C_i'$ are the <em>defining loops</em> for the Schottky group, however, they do not completely determine the group. Indeed, recall from our discussion of pairing clines that any hyperbolic transformation can be inserted in between the two inversions.
+
+      For our purposes, we will assume that the loops are clines in $\C^+$. Consider a set $\mathcal{C}$ of $n$ pairs of (<span style="color:red">overall</span>) non-intersecting clines:
+      $$\mathcal{C}=\{(C_1,C_1'), \dots, (C_n,C_n')\},$$
+      and the associated set of pairing transformations (as defined earlier)
+      $$\T=\{T_1, \dots, T_n\}.$$
       Define the "swiss cheese"-looking set
-      $$F=\C^+-\bigcup_{i=1, j=1}^{2,n} D_{i,j}$$
-      where $D_{i,j}$ is closed disk associated with cline $C_{i,j}$. Intuitively, $F$ is the extended plane with the clines and their interiors are punched out.
+      $$F=\C^+-\bigcup_{i=1}^n \overline{D_i \cup D_i'}$$
+      where $D_i^{(\prime)}$ is the largest open disk bounded by the cline $C_i^{(\prime)}$ so that no two disks intersect. Intuitively, $F$ is the extended plane with the clines and their "interiors" punched out.
 
-
-
-      Let $G$ be the (Schottky) group generated by $\T$, and observe that $T_{i,j}\circ T\in G$ maps $F$ into (but not onto) the interior of $T(D_{i,j})$. The orbit $\O_F$ of $F$ tiles the plane, except for the point-set boundary of $\O_F$, which is called the limit set of $G$. That is,
+      Let $G$ be the Schottky group generated by $\T$, and observe that $T_{i}^{(\prime)}\circ T\in G$ maps $F$ into (but not onto) the interior of $T(D_i^{(\prime)})$. The orbit $\O_F$ of $F$ tiles the plane, except for the point-set boundary of $\O_F$, which is the limit set of $G$. That is,
       $$H = \partial \O_F = \C^+ - \O_F.$$
       Also, due to the contstruction of $\T$, for any $T\in G$, $T(H) = H$.
 
@@ -129,25 +179,20 @@
       <br>
 
 
+      <section>Generating Images of Limit Sets</section>
+
+      <span style="color:red">Write this</span>
+
       Click <a href="Schottky.html" class="highlight">here</a> to see an interactive visual of the limit sets of a Schottky group.
-
-      <br>
-
-      Schottky groups are an example of Kleinian groups.
-
 
 
       <references>
-        <item id="springer"><em>Kleinian group</em>, Encyclopedia of Mathematics, Springer. <a class="highlight" href="https://encyclopediaofmath.org/wiki/Kleinian_group">https://encyclopediaofmath.org/wiki/Kleinian_group</a></item>
+        <item id="springer"><em>Kleinian group</em>, Encyclopedia of Mathematics, Springer. <a class="highlight" href="http://encyclopediaofmath.org/index.php?title=Kleinian_group&oldid=47504">http://encyclopediaofmath.org/index.php?title=Kleinian_group&oldid=47504</a></item>
         <item id="indra">David Mumford, Caroline Series, and David Write. <em>Indra's Pearls: The Vision of Felix Klein</em>, 2002.</item>
         <item id="ucdavis">Michael Kapovich. <em>Kleinian Groups in Higher Dimensions</em>. Progress in Mathematics, Vol. 256, 485-562, 2007. <a class="highlight" href="https://www.math.ucdavis.edu/~kapovich/EPR/klein.pdf">https://www.math.ucdavis.edu/~kapovich/EPR/klein.pdf</a></item>
+        <item id="ams">Rubén Hidalgo and Bernard Maskit. <em>On Neoclassical Schotty Groups</em>. Transations of the American Mathematical Society, Volume 358, Number 11, November 2006. <a class="highlight" href="https://www.ams.org/journals/tran/2006-358-11/S0002-9947-05-03792-X/S0002-9947-05-03792-X.pdf">https://www.ams.org/journals/tran/2006-358-11/S0002-9947-05-03792-X/S0002-9947-05-03792-X.pdf</a></item>
 
       </references>
-
-
-
-
-
 
 
 
