@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html lang="en">
   <head>
-    <title>The Beauty of Kleinian Groups</title>
+    <title>The Beauty of Schottky Groups</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -42,7 +42,7 @@
       \)
       </div>
 
-      <h1 style="text-align: center">The Beauty of Kleinian Groups</h1>
+      <h1 style="text-align: center">The Beauty of Schottky Groups</h1>
       <em style="display: block; text-align: center">Katelin P. Beach and Peter E. Francis</em>
 
       <abstract><span style="color: red">Write this</span></abstract>
@@ -60,56 +60,35 @@
 
       Recall that Möbius transformations $T$ are transformations of the extended complex plane (the Reimann Sphere) $\C^+$ of the form
       $$T(z)=\frac{az+b}{cz+d}$$
-      for complex constants $a, b, c, d\in\C$ satisfying $ab-cd\neq 0$. These transformations form the Möbius group $\M$. Let $\M_1\leq M$ be the subgroup of transformations with determinant 1.
+      for complex constants $a, b, c, d\in\C$ satisfying $ab-cd\neq 0$. These transformations form the Möbius group $\M$.
 
-      We know that $\M_1$ is normal since $\det:\M\to \R^*$ is a group homomorphism with kernel $\M_1$.
-
-      <span style="color:red">How do $\M$ and $\M_1$ relate to $\text{PSL}(2,\C)$?</span>
-
-      <section>Limit Sets of Kleinian Groups</section>
-
-      The study of Kleinian groups in generality started with Henri Poincaré and Felix Klein in 1883.
-
-      <definition title="Kleinian Group <cite to='ams'></cite>">
-        A <strong>Kleinian group</strong> is a discrete subgroup of $\text{PSL}(2,\C)$, the group of orientation-preserving conformal homeomorphisms of the extended complex plane, <span style="color:red"> and as the group of orientation-preserving isometries of hyperbolic 3-space.</span>
-      </definition>
-
-      <definition title="Kleinian Group <cite to='ucdavis'></cite>">
-        A <strong>Kleinian group</strong> is a discrete subgroup of the group of transformations on the Reimann Sphere.
-      </definition>
-
-
-      <definition title="Limit and Discontinuity Set <cite to='ams'></cite>" >
-        Given a Kleinian group $G$, we write $\Lambda(G)$ for its <strong>limit set</strong>, the set of limit points of the set $\{T(x)\mid T\in G\}$, <span style="color: red"> where $x$ is any point in hyperbolic three-space</span>. The complement of the limit set is called the <strong>discontinuity</strong> or <strong>regular set</strong> of $G$ and is denoted $\Omega(G)$.
-      </definition>
-
-
-      It is pointed out in <cite to="ams"></cite> that $\Lambda(G)$ is either
-     <ol>
-       <li>finite with cardinailty at most 2,</li>
-       <li>uncountably infinite and perfect nowhere dense, or</li>
-       <li>equal to $\C^+$.</li>
-     </ol>
-
-     We will build to some examples of the second case, which is clearly the most interesting and (perhaps, unsurprisingly) the most beautiful.
-
+      It turns out that the key to understanding pictures like the Apollonian Gasket above is to study specific subgroups of $\M$. There is a more general concept that includes the types of groups we are going to explore, but we will focus on a particular kind of group that is easier to define in the context of an introductory course in transformational geometry.
 
       <section id="pairing-clines">Pairing Clines</section>
 
-      It is important to keep in mind that because we are working in the extended complex plane, there is no real distinction between the "interior" and "exterior" of a cline. We are still going to use the words, but only to refer to opposite sides of a cline; it won't be confusing.
+      We will say that two clines are "non-overlapping" if they intersect at most once.
+
+      It is important to keep in mind that because we are working in the extended complex plane, there is no real distinction between the "interior" and "exterior" of a single cline. We are still going to use the words, but it won't be confusing. If the cline in question is a circle, your intuition won't lead you astray. When we refer to the interior of a line, it will always be in a very specific context: we have a set of non-overlapping clines, and there will be a side the line that does not contain the interior of another cline, and this region is the line's interior. <span style="color: red">Are we still being ambiguous about interiors and exteriors?</span>
 
       <definition>
-        Given two non-overlapping clines $C$ and $C'$, a Möbius transformation that maps the exterior and interior of $C'$ to the interior and exterior of $C$ is said to <b>pair the circles</b>. Of course, then $T$ also maps $C'$ to $C$, and we say that $T$ pairs $C'$ <b>to</b> $C$.
+        Given two clines $C$ and $C'$, suppose a Möbius transformation $T$ maps $C'$ to $C$, and also takes the exterior of $C'$ to the interior of $C$. Then $T$ is said to <b>pair the cline $C'$ to $C$</b>.
       </definition>
 
-      The inverse map $T^{-1}$ acts similarly on $C$; this action is "symmetric."
+      In the definition above, $T$ must also take the interior of $C'$ to the exterior of $C$. Clearly, if $T$ pairs $C'$ to $C$, then $T^{-1}$ pairs $C$ to $C'$.
 
       <lemma>
         There is a unique cline $K(C, C')$ over which (by inversion) $C$ and $C'$ are symmetric.
       </lemma>
       <proof collapse="true" open="true">
-        <span style="color: red">Write this</span>
-      </proof>
+        <span style="color: red">Katie, write this :)</span>
+
+        Suppose $C_a(A)=C$ and $C_b(B)=C'$, then
+
+        center of $K$: $A+a\frac{B-A}{a-b}$
+
+        radius of $K$: $\sqrt{\frac{ab\|B-A\|}{(a-b)^2}-ab}$
+
+        </proof>
 
       Any transformation $T$ that pairs $C'$ to $C$ can be written as the composition of the following maps.
       <ul>
@@ -133,23 +112,27 @@
         Define $C_{q}(s)=K(C, C')$. Then
         \begin{align*}
           T(z) & = \left(I_{K(C, C')} \circ I_{C}\right)(z) \\
-                 & = \frac{r^2}{\overline{\left(\frac{s^2}{\overline{z - q}} + q\right) - p}} + p \\
-                 & = \frac{r^2}{\frac{\overline{s^2}}{z - q} + \overline{q-p_1}} + p \\
-                 & = \frac{r^2(z-q)}{\overline{s^2} + (\overline{q-p})(z-q)} + p \\
-                 & = \dots \\
-                 & = \left(\frac{r^2}{\overline{q-p}}+p\right)\frac{z - \left(\frac{r^2q+\overline{s^2} + q\left(\overline{q-p}\right)}{r^2+p\left(\overline{q-p}\right)}\right)}{z-\left(\frac{\overline{s^2} - q\left(\overline{q-p}\right)}{\overline{q-p}} \right)},
+               & = \frac{r^2}{\overline{\left(\frac{s^2}{\overline{z - q}} + q\right) - p}} + p \\
+               & = \frac{r^2}{\frac{\overline{s^2}}{z - q} + \overline{q-p_1}} + p \\
+               & = \frac{r^2(z-q)}{\overline{s^2} + (\overline{q-p})(z-q)} + p \\
+               & = \dots \\
+               & = \left(\frac{r^2}{\overline{q-p}}+p\right)\frac{z - \left(\frac{r^2q+\overline{s^2} + q\left(\overline{q-p}\right)}{r^2+p\left(\overline{q-p}\right)}\right)}{z-\left(\frac{\overline{s^2} - q\left(\overline{q-p}\right)}{\overline{q-p}} \right)},
         \end{align*}
         so $T$ is clearly loxodromic.
 
-        <span style="color:red">Show that the mess in the numerator is the image under inversion over $C$ of the mess in the denominator.</span>
+        <span style="color:red">Katie, show that the mess in the numerator is the image under inversion over $C$ of the mess in the denominator.</span>
       </proof>
+
+
+
+
 
 
 
 
       <section>Schottky Groups</section>
 
-      Schottky groups are a common type of Kleinian group that were first studied by Friedrich Schottky in 1877.
+      Schottky groups were first studied by Friedrich Schottky in 1877.
 
       <definition title="Schottky Group <cite to='ams'></cite>">
         A <strong>Schottky group</strong> is a Kleinian group generated by transformations $T_1,\dots, T_n$ where there are $2n$ disjoint simple loops, $C_1, C_1',\dots,C_n, C_n'$, bounding a common domain $F$ in the extended complex plane $\C^+$, where $T_i(C_i') = C_i$, and $T_i(F)\cap F=\emptyset$, $i = 1,\dots,n$.
@@ -184,6 +167,43 @@
       <span style="color:red">Write this</span>
 
       Click <a href="Schottky.html" class="highlight">here</a> to see an interactive visual of the limit sets of a Schottky group.
+
+
+
+
+
+      <section>Limit Sets of Kleinian Groups</section>
+
+      The study of Kleinian groups in generality started with Henri Poincaré and Felix Klein in 1883.
+
+      <definition title="Kleinian Group <cite to='ams'></cite>">
+        A <strong>Kleinian group</strong> is a discrete subgroup of $\text{PSL}(2,\C)$, the group of orientation-preserving conformal homeomorphisms of the extended complex plane, <span style="color:red"> and as the group of orientation-preserving isometries of hyperbolic 3-space.</span>
+      </definition>
+
+      <definition title="Kleinian Group <cite to='ucdavis'></cite>">
+        A <strong>Kleinian group</strong> is a discrete subgroup of the group of transformations on the Reimann Sphere.
+      </definition>
+
+
+      <definition title="Limit and Discontinuity Set <cite to='ams'></cite>" >
+        Given a Kleinian group $G$, we write $\Lambda(G)$ for its <strong>limit set</strong>, the set of limit points of the set $\{T(x)\mid T\in G\}$, <span style="color: red"> where $x$ is any point in hyperbolic three-space</span>. The complement of the limit set is called the <strong>discontinuity</strong> or <strong>regular set</strong> of $G$ and is denoted $\Omega(G)$.
+      </definition>
+
+
+      It is pointed out in <cite to="ams"></cite> that $\Lambda(G)$ is either
+     <ol>
+       <li>finite with cardinailty at most 2,</li>
+       <li>uncountably infinite and perfect nowhere dense, or</li>
+       <li>equal to $\C^+$.</li>
+     </ol>
+
+     We will build to some examples of the second case, which is clearly the most interesting and (perhaps, unsurprisingly) the most beautiful.
+
+
+
+
+
+
 
 
       <references>

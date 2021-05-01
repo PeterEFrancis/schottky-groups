@@ -352,11 +352,16 @@ const COMP_PURPOSES  = {
 
     // breadth first search through tree to make orbit of fomage
     let queue = [];
-    for (let i = 0; i < base_circles.length; i++) {
-      let pair = base_circles[i];
-      queue.push({depth: 0, circle: pair[0], last: 2 * i});
-      queue.push({depth: 0, circle: pair[1], last: 2 * i + 1});
-    }
+    // for (let i = 0; i < base_circles.length; i++) {
+    //   let pair = base_circles[i];
+    //   queue.push({depth: 0, circle: pair[0], last: 2 * i});
+    //   queue.push({depth: 0, circle: pair[1], last: 2 * i + 1});
+    // }
+    queue.push({depth: 0, circle: {center:{x:-0.5,y:0}, radius: 0.5}, last: -1});
+    queue.push({depth: 0, circle: {center:{x:0.5,y:0}, radius: 0.5}, last: -1});
+    queue.push({depth: 0, circle: {center:{x:0, y: Math.sqrt(3) / 2}, radius: 0.25}, last: -1});
+    queue.push({depth: 0, circle: {center:{x:0,y:-0.666}, radius: 0.25}, last: -1});
+
     while (queue.length > 0) {
 
       let node = queue.shift();
@@ -364,7 +369,7 @@ const COMP_PURPOSES  = {
       let circle = node.circle;
 
       if (info.methods.includes('depth') && node.depth === info.depth) continue;
-      // if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
+      if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
 
       self.postMessage({
         type: 'update',
@@ -422,9 +427,9 @@ const COMP_PURPOSES  = {
     //   queue.push({depth: 0, circle: pair[1], last: 2 * i + 1});
     // }
     // while (queue.length > 0) {
-    //   let node = queue.shift();
+    //   let node = queue.pop();
     //   let circle = node.circle;
-    //   if (node.depth < 7) {
+    //   if (node.depth < 8) {
     //     for (let i = 0; i < transformations.length; i++) {
     //       if (inverse_of(i) != node.last && inverse_of(node.last) != i) {
     //         queue.push({
