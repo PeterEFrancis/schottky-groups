@@ -55,14 +55,20 @@
 
       We are motivated by understanding the following picture from the perspective of transformational geometry.
 
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e6/Apollonian_gasket.svg" style="width: 250px; display: block; margin: auto; cursor: pointer" onclick="window.open('https://commons.wikimedia.org/wiki/File:Apollonian_gasket.svg', '_blank');"/>
+      <img src="ApollonianGasket.svg" style="width: 250px; display: block; margin: auto;"/>
       <center style="margin-bottom:30px">An Apollonian Gasket</center>
 
       Recall that Möbius transformations $T$ are transformations of the extended complex plane (the Reimann Sphere) $\C^+$ of the form
       $$T(z)=\frac{az+b}{cz+d}$$
       for complex constants $a, b, c, d\in\C$ satisfying $ab-cd\neq 0$. These transformations form the Möbius group $\M$.
 
-      It turns out that the key to understanding pictures like the Apollonian Gasket above is to study specific subgroups of $\M$. There is a more general concept that includes the types of groups we are going to explore, but we will focus on a particular kind of group that is easier to define in the context of an introductory course in transformational geometry.
+      It turns out that the key to understanding pictures like the Apollonian Gasket above is to study specific subgroups of $\M$.
+
+      <definition title="Kleinian Group <cite to='ucdavis'></cite>">
+        A <strong>Kleinian group</strong> is a discrete subgroup of $\M$.
+      </definition>
+
+      There is a more general concept that includes the types of groups we are going to explore, but we will focus on a particular kind of group that is easier to define in the context of an introductory course in transformational geometry.
 
       <section id="pairing-clines">Pairing Clines</section>
 
@@ -113,7 +119,7 @@
         \begin{align*}
           T(z) & = \left(I_{K(C, C')} \circ I_{C}\right)(z) \\
                & = \frac{r^2}{\overline{\left(\frac{s^2}{\overline{z - q}} + q\right) - p}} + p \\
-               & = \frac{r^2}{\frac{\overline{s^2}}{z - q} + \overline{q-p_1}} + p \\
+               & = \frac{r^2}{\frac{\overline{s^2}}{z - q} + \overline{q-p}} + p \\
                & = \frac{r^2(z-q)}{\overline{s^2} + (\overline{q-p})(z-q)} + p \\
                & = \dots \\
                & = \left(\frac{r^2}{\overline{q-p}}+p\right)\frac{z - \left(\frac{r^2q+\overline{s^2} + q\left(\overline{q-p}\right)}{r^2+p\left(\overline{q-p}\right)}\right)}{z-\left(\frac{\overline{s^2} - q\left(\overline{q-p}\right)}{\overline{q-p}} \right)},
@@ -125,12 +131,7 @@
 
 
 
-
-
-
-
-
-      <section>Schottky Groups</section>
+      <section>Constructing Schottky Groups</section>
 
       Schottky groups were first studied by Friedrich Schottky in 1877.
 
@@ -166,7 +167,7 @@
 
       <span style="color:red">Write this</span>
 
-      Click <a href="Schottky.html" class="highlight">here</a> to see an interactive visual of the limit sets of a Schottky group.
+      Click <a href="generator.html" class="highlight">here</a> to see an interactive visual of the limit sets of a Schottky group.
 
 
 
@@ -175,15 +176,6 @@
       <section>Limit Sets of Kleinian Groups</section>
 
       The study of Kleinian groups in generality started with Henri Poincaré and Felix Klein in 1883.
-
-      <definition title="Kleinian Group <cite to='ams'></cite>">
-        A <strong>Kleinian group</strong> is a discrete subgroup of $\text{PSL}(2,\C)$, the group of orientation-preserving conformal homeomorphisms of the extended complex plane, <span style="color:red"> and as the group of orientation-preserving isometries of hyperbolic 3-space.</span>
-      </definition>
-
-      <definition title="Kleinian Group <cite to='ucdavis'></cite>">
-        A <strong>Kleinian group</strong> is a discrete subgroup of the group of transformations on the Reimann Sphere.
-      </definition>
-
 
       <definition title="Limit and Discontinuity Set <cite to='ams'></cite>" >
         Given a Kleinian group $G$, we write $\Lambda(G)$ for its <strong>limit set</strong>, the set of limit points of the set $\{T(x)\mid T\in G\}$, <span style="color: red"> where $x$ is any point in hyperbolic three-space</span>. The complement of the limit set is called the <strong>discontinuity</strong> or <strong>regular set</strong> of $G$ and is denoted $\Omega(G)$.

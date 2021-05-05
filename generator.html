@@ -37,18 +37,18 @@
   <body>
     <h1 style="text-align: center">Schottky Group Orbits</h1>
     <svg id="A"></svg>
-    <p>Enter pairs of circles, separated by new lines. Example of a circle: [[cx, cy], r]</p>
+    <p>Circles defining the transformations. Enter pairs of circles separated by semicolons, pairs separated by new lines. Example of a circle: [[cx, cy], r]</p>
     <textarea id="input">
 [[-1, -1], 1]; [[1, -1], 1]
 [[0, -0.25], 0.25]; [[0, 1000], 1000]</textarea>
-  <br><br>
+<br><br>
   Node Pruning Method:
   <ul style="list-style-type: none;">
     <li>
-      <label> <input type="checkbox" value="smallest-radius" id="cb1" checked disabled onchange="fix_cb()"> Smallest Radius: <input id="smallest-radius" type="number" placeholder="0.01" value="0.01" step="0.001" min="0.00000001"></input></label>
+      <label> <input type="checkbox" value="smallest-radius" id="cb1" onchange="fix_cb()"> Smallest Radius: <input id="smallest-radius" type="number" placeholder="0.01" value="0.01" step="0.001" min="0.00000001"></input></label>
     </li>
     <li>
-      <label> <input type="checkbox" value="depth" id="cb2" onchange="fix_cb()"> Depth: <input id="depth" type="number" placeholder="5" value="5"></input></label>
+      <label> <input type="checkbox" value="depth" id="cb2" onchange="fix_cb()" checked> Depth: <input id="depth" type="number" placeholder="5" value="5"></input></label>
     </li>
     <!-- <li>
       <label> Time (s): <input id="time" type="number" placeholder="60" value="60"></input></label>

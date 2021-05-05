@@ -283,7 +283,6 @@ class GeoSVG {
     // }
 
     this.dom.appendChild(circle_dom);
-
     return circle_dom;
   }
 
@@ -306,23 +305,35 @@ function inverse_of(i) {
   }
 }
 
+function are_inverses(i, j) {
+  return Math.max(i, j) - Math.min(i, j) == 1 && Math.min(i, j) % 2 == 0;
+}
+
+
+function parse_clist(clist) {
+  return {
+    center: {x: clist[0][0], y: clist[0][1]},
+    radius: clist[1]
+  }
+}
 
 function parse_input(input_circles) {
   let base_circles = [];
   for (let i = 0; i < input_circles.length; i++) {
     base_circles[i] = [];
     for (let j = 0; j < 2; j++) {
-      let circle = {
-        center: {x: input_circles[i][j][0][0], y: input_circles[i][j][0][1]},
-        radius: input_circles[i][j][1]
-      };
-      base_circles[i].push(circle);
+      base_circles[i].push(parse_clist(input_circles[i][j]));
     }
   }
   return base_circles;
 }
 
-
+function circles_are_equal(c1, c2) {
+  if (Math.abs(c1.center.x - c2.center.x) > 0.00000001) return false;
+  if (Math.abs(c1.center.y - c2.center.y) > 0.00000001) return false;
+  if (Math.abs(c1.radius - c2.radius) > 0.00000001) return false;
+  return true;
+}
 
 
 
@@ -340,6 +351,8 @@ const COMP_PURPOSES  = {
       }
     }
 
+
+
     // build pairing mobius transformations based on the circles
     const transformations = get_transformations(base_circles);
     function get_random_transformation(last) {
@@ -350,33 +363,25 @@ const COMP_PURPOSES  = {
       return transformations[new_t];
     }
 
+
+
     // breadth first search through tree to make orbit of fomage
     let queue = [];
-    // for (let i = 0; i < base_circles.length; i++) {
-    //   let pair = base_circles[i];
-    //   queue.push({depth: 0, circle: pair[0], last: 2 * i});
-    //   queue.push({depth: 0, circle: pair[1], last: 2 * i + 1});
-    // }
-    queue.push({depth: 0, circle: {center:{x:-0.5,y:0}, radius: 0.5}, last: -1});
-    queue.push({depth: 0, circle: {center:{x:0.5,y:0}, radius: 0.5}, last: -1});
-    queue.push({depth: 0, circle: {center:{x:0, y: Math.sqrt(3) / 2}, radius: 0.25}, last: -1});
-    queue.push({depth: 0, circle: {center:{x:0,y:-0.666}, radius: 0.25}, last: -1});
-
+    for (let i = 0; i < base_circles.length; i++) {
+      let pair = base_circles[i];
+      queue.push({depth: 0, circle: pair[0], last: 2 * i});
+      queue.push({depth: 0, circle: pair[1], last: 2 * i + 1});
+    }
     while (queue.length > 0) {
-
       let node = queue.shift();
-
       let circle = node.circle;
-
       if (info.methods.includes('depth') && node.depth === info.depth) continue;
       if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
-
       self.postMessage({
         type: 'update',
         color: 'black',
         circle: circle
       })
-
       for (let i = 0; i < transformations.length; i++) {
         if (inverse_of(i) != node.last && inverse_of(node.last) != i) {
           queue.push({
@@ -387,6 +392,88 @@ const COMP_PURPOSES  = {
         }
       }
     }
+
+
+
+
+
+    // manual limit set for specific group
+    // let lqueue = [];
+    // lqueue.push({depth: 0, circle: {center:{x:-0.5,y:0}, radius:0.5}, last:-1});
+    // lqueue.push({depth: 0, circle: {center:{x:0.5,y:0}, radius:0.5}, last: -1});
+    // lqueue.push({depth: 0, circle: {center:{x:0,y: 2/3}, radius: 1/3}, last:-1});
+    // lqueue.push({depth: 0, circle: {center:{x:0,y:-2/3}, radius:1/3}, last: -1});
+    //
+    // while (lqueue.length > 0) {
+    //   let node = lqueue.shift();
+    //   let circle = node.circle;
+    //   if (info.methods.includes('depth') && node.depth === info.depth) continue;
+    //   if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
+    //
+    //   let COLORS = ['red', 'green', 'blue', 'purple'];
+    //   COLORS[-1] = 'orange';
+    //
+    //   if (node.depth > 0) {
+    //     if (Math.abs(circle.radius) > 0.2) continue;
+    //   }
+    //
+    //   self.postMessage({
+    //     type: 'update',
+    //     color: 'black', // COLORS[node.last],
+    //     circle: circle
+    //   })
+    //
+    //   for (let i of [0,1,2,3]) {
+    //     if (!are_inverses(i, node.last)) {
+    //       let new_circle = transform_circle(transformations[i], circle);
+    //       // if (!circles_are_equal(circle, new_circle)) {
+    //         lqueue.push({
+    //           depth: node.depth + 1,
+    //           circle: new_circle,
+    //           last: i
+    //         });
+    //       // }
+    //     }
+    //   }
+    // }
+    // geoSVG.add_circle({center:{x:0,y:0}, radius: 1}, {color:'black'})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
