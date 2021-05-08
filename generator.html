@@ -120,7 +120,7 @@
           console.log(msg.data.error);
         } else if (msg.data.type == 'update') {
           if ('circle' in msg.data) {
-            geoSVG.add_circle(msg.data.circle, {color: msg.data.color});
+            geoSVG.add_circle(msg.data.circle, {color: msg.data.color, stroke_width: msg.data.stroke_width});
           } else {
             geoSVG.add_point(msg.data.point, msg.data.color);
           }

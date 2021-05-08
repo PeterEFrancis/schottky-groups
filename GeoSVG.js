@@ -101,7 +101,6 @@ function transform_circle(transformation, circle) {
 }
 
 function do_circles_overlap(c1, c2) {
-  console.log()
   return c1.radius + c2.radius > distance(c1.center, c2.center);
 }
 
@@ -398,45 +397,53 @@ const COMP_PURPOSES  = {
 
 
     // manual limit set for specific group
-    // let lqueue = [];
-    // lqueue.push({depth: 0, circle: {center:{x:-0.5,y:0}, radius:0.5}, last:-1});
-    // lqueue.push({depth: 0, circle: {center:{x:0.5,y:0}, radius:0.5}, last: -1});
-    // lqueue.push({depth: 0, circle: {center:{x:0,y: 2/3}, radius: 1/3}, last:-1});
-    // lqueue.push({depth: 0, circle: {center:{x:0,y:-2/3}, radius:1/3}, last: -1});
-    //
-    // while (lqueue.length > 0) {
-    //   let node = lqueue.shift();
-    //   let circle = node.circle;
-    //   if (info.methods.includes('depth') && node.depth === info.depth) continue;
-    //   if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
-    //
-    //   let COLORS = ['red', 'green', 'blue', 'purple'];
-    //   COLORS[-1] = 'orange';
-    //
-    //   if (node.depth > 0) {
-    //     if (Math.abs(circle.radius) > 0.2) continue;
-    //   }
-    //
-    //   self.postMessage({
-    //     type: 'update',
-    //     color: 'black', // COLORS[node.last],
-    //     circle: circle
-    //   })
-    //
-    //   for (let i of [0,1,2,3]) {
-    //     if (!are_inverses(i, node.last)) {
-    //       let new_circle = transform_circle(transformations[i], circle);
-    //       // if (!circles_are_equal(circle, new_circle)) {
-    //         lqueue.push({
-    //           depth: node.depth + 1,
-    //           circle: new_circle,
-    //           last: i
-    //         });
-    //       // }
-    //     }
-    //   }
-    // }
-    // geoSVG.add_circle({center:{x:0,y:0}, radius: 1}, {color:'black'})
+    const DEPTH = 200;
+    const SMALLEST_RADIUS = 0.0005;
+    let lqueue = [];
+    lqueue.push({depth: 0, circle: {center:{x:-0.5,y:0}, radius:0.5}, last:-1});
+    lqueue.push({depth: 0, circle: {center:{x:0.5,y:0}, radius:0.5}, last: -1});
+    lqueue.push({depth: 0, circle: {center:{x:0,y: 2/3}, radius: 1/3}, last:-1});
+    lqueue.push({depth: 0, circle: {center:{x:0,y:-2/3}, radius:1/3}, last: -1});
+
+    while (lqueue.length > 0) {
+      let node = lqueue.shift();
+      let circle = node.circle;
+      if (info.methods.includes('depth') && node.depth === DEPTH) continue;
+      if (info.methods.includes('smallest_radius') && circle.radius < SMALLEST_RADIUS) continue;
+
+      let COLORS = ['red', 'green', 'blue', 'purple'];
+      COLORS[-1] = 'orange';
+
+      if (node.depth > 0) {
+        if (Math.abs(circle.radius) > 0.2) continue;
+      }
+
+      self.postMessage({
+        type: 'update',
+        color: 'red', // COLORS[node.last],
+        circle: circle,
+        stroke_width: 0.5
+      })
+
+      for (let i of [0,1,2,3]) {
+        if (!are_inverses(i, node.last)) {
+          let new_circle = transform_circle(transformations[i], circle);
+          // if (!circles_are_equal(circle, new_circle)) {
+            lqueue.push({
+              depth: node.depth + 1,
+              circle: new_circle,
+              last: i
+            });
+          // }
+        }
+      }
+    }
+    self.postMessage({
+      type: 'update',
+      color: 'red', // COLORS[node.last],
+      circle: {center:{x:0,y:0}, radius: 1},
+      stroke_width: 0.5
+    })
 
 
 
