@@ -223,6 +223,20 @@ function get_fixed_points(tr) {
 
 
 
+function get_color_depth(depth, T) {
+  // let g = 255 * Math.sqrt((depth - 1) / total);
+  // let g = 255 * (2000 ** (-radius));
+  // return "rgb(255, " + g + ", 0)";
+
+  // let x = 255 * (1 - 1 / (depth/10 + 1));
+  // return "rgb(" + x + ", " + x + ", 255)";
+
+  let r = 255 * (Math.cos(depth / T) + 1/2);
+  let b = 255 * (Math.cos(depth / T + Math.PI * 2 / 3) + 1/2);
+  let g = 255 * (Math.cos(depth / T + Math.PI * 4 / 3) + 1/2);
+  return "rgb(" + r + ", " + g + ", " + b + ")";
+}
+
 
 
 
@@ -265,7 +279,7 @@ class GeoSVG {
     circle_dom.setAttribute('cx', hk.h);
     circle_dom.setAttribute('cy', hk.k);
     circle_dom.setAttribute('r', c.radius * this.zoom);
-    circle_dom.setAttribute('stroke', args.color || "blue");
+    circle_dom.setAttribute('stroke', args.stroke_width == 0 ? false : args.color || "black");
     circle_dom.setAttribute('stroke-width', args.stroke_width || 0.1);
     circle_dom.setAttribute('fill', args.fill || "transparent");
 
@@ -287,7 +301,7 @@ class GeoSVG {
 
   add_point(p, color) {
     this.add_circle(
-      {center: p, radius: 0.1 / this.zoom},
+      {center: p, radius: 0.5 / this.zoom},
       {color: color, fill: color}
     );
   }
@@ -378,7 +392,11 @@ const COMP_PURPOSES  = {
       if (info.methods.includes('smallest_radius') && circle.radius < info.smallest_radius) continue;
       self.postMessage({
         type: 'update',
-        color: 'black',
+        args: {
+          color: 'black',
+          stroke_width: info.color ? 0 : 0.1,
+          fill: info.color ? get_color_depth(node.depth, info.period) : false
+        },
         circle: circle
       })
       for (let i = 0; i < transformations.length; i++) {
@@ -397,85 +415,55 @@ const COMP_PURPOSES  = {
 
 
     // manual limit set for specific group
-    const DEPTH = 200;
-    const SMALLEST_RADIUS = 0.0005;
-    let lqueue = [];
-    lqueue.push({depth: 0, circle: {center:{x:-0.5,y:0}, radius:0.5}, last:-1});
-    lqueue.push({depth: 0, circle: {center:{x:0.5,y:0}, radius:0.5}, last: -1});
-    lqueue.push({depth: 0, circle: {center:{x:0,y: 2/3}, radius: 1/3}, last:-1});
-    lqueue.push({depth: 0, circle: {center:{x:0,y:-2/3}, radius:1/3}, last: -1});
-
-    while (lqueue.length > 0) {
-      let node = lqueue.shift();
-      let circle = node.circle;
-      if (info.methods.includes('depth') && node.depth === DEPTH) continue;
-      if (info.methods.includes('smallest_radius') && circle.radius < SMALLEST_RADIUS) continue;
-
-      let COLORS = ['red', 'green', 'blue', 'purple'];
-      COLORS[-1] = 'orange';
-
-      if (node.depth > 0) {
-        if (Math.abs(circle.radius) > 0.2) continue;
-      }
-
-      self.postMessage({
-        type: 'update',
-        color: 'red', // COLORS[node.last],
-        circle: circle,
-        stroke_width: 0.5
-      })
-
-      for (let i of [0,1,2,3]) {
-        if (!are_inverses(i, node.last)) {
-          let new_circle = transform_circle(transformations[i], circle);
-          // if (!circles_are_equal(circle, new_circle)) {
-            lqueue.push({
-              depth: node.depth + 1,
-              circle: new_circle,
-              last: i
-            });
-          // }
-        }
-      }
-    }
-    self.postMessage({
-      type: 'update',
-      color: 'red', // COLORS[node.last],
-      circle: {center:{x:0,y:0}, radius: 1},
-      stroke_width: 0.5
-    })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // const DEPTH = 200;
+    // const SMALLEST_RADIUS = 0.0005;
+    // let lqueue = [];
+    // lqueue.push({depth: 0, circle: {center:{x:-0.25,y:-0.25}, radius:0.353}, last:-1});
+    // lqueue.push({depth: 0, circle: {center:{x:0.25,y:0.25}, radius:0.353}, last:-1});
+    // lqueue.push({depth: 0, circle: {center:{x:0.5,y:0}, radius:0.5}, last: -1});
+    // lqueue.push({depth: 0, circle: {center:{x:-0.5,y:0}, radius:0.5}, last: -1});
+    // lqueue.push({depth: 0, circle: {center:{x:0,y: 2/3}, radius: 1/3}, last:-1});
+    // lqueue.push({depth: 0, circle: {center:{x:0,y:-2/3}, radius:1/3}, last: -1});
+    //
+    // while (lqueue.length > 0) {
+    //   let node = lqueue.shift();
+    //   let circle = node.circle;
+    //   if (info.methods.includes('depth') && node.depth === DEPTH) continue;
+    //   if (info.methods.includes('smallest_radius') && circle.radius < SMALLEST_RADIUS) continue;
+    //
+    //   let COLORS = ['red', 'green', 'blue', 'purple'];
+    //   COLORS[-1] = 'orange';
+    //
+    //   if (node.depth > 0) {
+    //     if (Math.abs(circle.radius) > 0.2) continue;
+    //   }
+    //
+    //   self.postMessage({
+    //     type: 'update',
+    //     color: 'red', // COLORS[node.last],
+    //     circle: circle,
+    //     stroke_width: 0.5
+    //   })
+    //
+    //   for (let i of [0,1,2,3]) {
+    //     if (!are_inverses(i, node.last)) {
+    //       let new_circle = transform_circle(transformations[i], circle);
+    //       // if (!circles_are_equal(circle, new_circle)) {
+    //         lqueue.push({
+    //           depth: node.depth + 1,
+    //           circle: new_circle,
+    //           last: i
+    //         });
+    //       // }
+    //     }
+    //   }
+    // }
+    // self.postMessage({
+    //   type: 'update',
+    //   color: 'red', // COLORS[node.last],
+    //   circle: {center:{x:0,y:0}, radius: 1},
+    //   stroke_width: 0.5
+    // })
 
 
 
@@ -514,19 +502,19 @@ const COMP_PURPOSES  = {
 
 
     // method 1
-    // let queue = [];
+    // let queue2 = [];
     // for (let i = 0; i < base_circles.length; i++) {
     //   let pair = base_circles[i];
-    //   queue.push({depth: 0, circle: pair[0], last: 2 * i});
-    //   queue.push({depth: 0, circle: pair[1], last: 2 * i + 1});
+    //   queue2.push({depth: 0, circle: pair[0], last: 2 * i});
+    //   queue2.push({depth: 0, circle: pair[1], last: 2 * i + 1});
     // }
-    // while (queue.length > 0) {
-    //   let node = queue.pop();
+    // while (queue2.length > 0) {
+    //   let node = queue2.pop();
     //   let circle = node.circle;
-    //   if (node.depth < 8) {
+    //   if (node.depth < 7) {
     //     for (let i = 0; i < transformations.length; i++) {
     //       if (inverse_of(i) != node.last && inverse_of(node.last) != i) {
-    //         queue.push({
+    //         queue2.push({
     //           depth: node.depth + 1,
     //           circle: transform_circle(transformations[i], circle),
     //           last: i
@@ -550,7 +538,7 @@ const COMP_PURPOSES  = {
     // let stack = [{depth: 0, point: {x:10, y:0}, last: -1}];
     // while (stack.length > 0) {
     //   let node = stack.pop();
-    //   if (node.depth == 7) {
+    //   if (node.depth == 20) {
     //     self.postMessage({
     //       type: 'update',
     //       color: 'red',

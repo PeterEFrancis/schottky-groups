@@ -34,6 +34,10 @@
         font-weight: bold;
         content:"Figure: "
       } */
+
+      img {
+        max-width: 100%;
+      }
     </style>
 
   </head>
@@ -66,54 +70,67 @@
       We are motivated by understanding the following picture from the perspective of transformational geometry.
 
       <img src="img/ApollonianGasket.svg" style="width: 250px; display: block; margin: auto;"/>
-      <center class="caption">An Apollonian Gasket</center>
+      <center class="caption">An Apollonian gasket</center>
 
-      Apollonian gaskets are named after the Greek mathematician Apollonius of Perga. To construct one, first draw three mutually tangent circles and circumscribe a fourth circle tangent to all three. Then, ad infinitum, for each region inside the fourth circle but outside any other, inscribe the largest possible circle.
+      Apollonian gaskets are named after the Greek mathematician Apollonius of Perga. To construct one, first draw three mutually tangent circles and circumscribe a fourth circle tangent to all three. Then, ad infinitum, for each region inside the fourth circle but outside any other, inscribe the largest possible circle. Thier mesmorizing (yet, unconventional) self-similarity is beautiful, and is the key insight into a deeper way of understanding them.
 
       Recall that Möbius transformations $T$ are transformations of the extended complex plane (the Reimann Sphere) $\C^+$ of the form
       $$T(z)=\frac{az+b}{cz+d}$$
       for complex constants $a, b, c, d\in\C$ satisfying $ab-cd\neq 0$. These transformations form the Möbius group $\M$.
 
-      It turns out that the key to understanding pictures like the Apollonian Gasket above is to study specific subgroups of $\M$. <b>Kleinian Groups</b> are discrete subgroups of $\M$, and these groups are studied in generality, but we'll focus on a particular kind of Kleinian group called Shottky Groups, which are easier to define in the context of an introductory course in transformational geometry.
+      It turns out that the key to understanding pictures like the Apollonian gasket above is to study specific subgroups of $\M$. <b>Kleinian groups</b> are discrete subgroups of $\M$, and these groups are studied in generality, but we'll focus on a particular kind of Kleinian group called Shottky groups, which are easier to define in the context of an introductory course in transformational geometry.
 
       <section id="pairing-clines">Pairing Clines</section>
 
-      It will be usefult to say that two clines are "non-overlapping" if they intersect at most once.
+      It will be useful to say that two clines are <b>non-overlapping</b> if their interiors do not intersect. Because we are working in the extended complex plane, there is a priori no distinction between the <b>interior</b> and <b>exterior</b> of a single cline. We are still going to use the words, but it won't be confusing.
 
-      It is important to keep in mind that because we are working in the extended complex plane, there is no real distinction between the "interior" and "exterior" of a single cline. We are still going to use the words, but it won't be confusing. If the cline in question is a circle, your intuition won't lead you astray. When we refer to the interior of a line, it will always be in a very specific context: we have a set of non-overlapping clines, and there will be a side the line that does not contain the interior of another, and this region is the line's interior. In short, the interior of a cline cannot intersect the interior of another. <span style="color: red">Are we still being ambiguous about interiors and exteriors?</span>
+      If the cline in question is a circle, your intuition won't lead you astray. When we refer to the interior of a line, it will always be in a very specific context: we have a set of at least two possibly-tangent clines (at most two of which are lines), and there will be a side the line that does not contain the interior of another, and this region is the line's interior.
 
       <img src="img/clines_and_interiors.svg" style="width: 400px; display: block; margin: auto;"/>
       <center class="caption">Four non-overlapping clines and their interiors shaded gray</center>
+
+      In the situation described above, interiors are only defined when we have at most two lines in our set of clines, and in this case the lines must be parallel (intersecting only at infinity). The figure below shows an example of this case.
+
+      <img src="img/clines_and_interiors_2.svg" style="width: 400px; display: block; margin: auto;"/>
+      <center class="caption">Six non-overlapping clines and their interiors shaded gray</center>
+
+      This definition of interior comes from the view of a line as a limiting case of a circle: both euclidean circles and lines are circles on the sphere, so in the extended complex plane, we can view lines as circles with infinite radius.
 
       <definition>
         Given two clines $C$ and $C'$, suppose a Möbius transformation $T$ maps $C'$ to $C$, and also takes the exterior of $C'$ to the interior of $C$. Then $T$ is said to <b>pair the cline $C'$ to $C$</b>.
       </definition>
 
-      In the definition above, $T$ must also take the interior of $C'$ to the exterior of $C$. Clearly, if $T$ pairs $C'$ to $C$, then $T^{-1}$ pairs $C$ to $C'$.
+      In the definition above, $T$ must also take the interior of $C'$ to the exterior of $C$. Clearly, if $T$ pairs $C'$ to $C$, then $T'=T^{-1}$ pairs $C$ to $C'$.
 
       <lemma>
-        There is a unique cline $K(C, C')$ over which (by inversion) $C$ and $C'$ are symmetric.
+        Given two non-overlapping clines $C$ and $C'$, there is a unique cline $K(C, C')$ over which (by inversion) $C$ and $C'$ are symmetric.
       </lemma>
       <proof collapse="true" open="true">
-        <span style="color: red">Katie, write this :)</span>
+        Suppose that $C$ and $C'$ are non-intersecting. Then we can assume that $C=C_{r}(p)$ and $C'=C_{s}(q)$  are circles concentric at the origin, and the cline $K$ that we seek is the circle with radius $\sqrt{rs}$ centered at the origin.
 
-        Suppose $C_a(A)=C$ and $C_b(B)=C'$, then
+        If the clines are intersecting and $C=C_{r}(p)$ and $C'=C_{s}(q)$ are both circles, then we have two cases:
+          <ol>
+            <li>If $r=s$, then $K$ is the perpendicular bisector of the line containing both $p$ and $q$.</li>
+            <li>Otherwise, the cline with center $p+\frac{r(q-p)}{r-s}$ and radius $\sqrt{\frac{rs|q-p|^2}{(r-s)^2}-rs}$ is the one we seek.</li>
+          </ol>
 
-        center of $K$: $A+a\frac{B-A}{a-b}$
+        We only have left to consider when $C$ is a circle and $C'$ is a tangent line; we can assume $C=S^1$ and $C'=i\cdot\R+1$. In this case, the cline we seek is $K=C_2(-1)$.
 
-        radius of $K$: $\sqrt{\frac{ab\|B-A\|}{(a-b)^2}-ab}$
-
+        The messy algebra is left to the reader.
         </proof>
+
+        <b>Remark.</b> For our computational purposes, the constructions in points (1) and (2) will be enough: lines will be approximated with large circles. You can check with some more algebra that $K$ as constructed in (1) and (2) is the cline we seek for the non-intersecting case as well.
 
       Any transformation $T$ that pairs $C'$ to $C$ can be written as the composition of the following maps.
       <ul>
         <li>Invert over $C$.</li>
-        <li>Transform $C$ to the unit circle.</li>
+        <li>Translate and scale $C$ to the unit circle.</li>
         <li>Perform any transformation from the hyperbolic group (disk automorphism).</li>
-        <li>Transform the unit circle back to $C$.</li>
+        <li>Translate and scale the unit circle back to $C$.</li>
         <li>Invert over the cline $K(C,C')$.</li>
       </ul>
-      For now we will consider the case when the transformation chosen from the hyperbolic group is the identity. Algebraically, suppose $C$ has centers $p$ and radius $r$. Then any function $T:\C^+\to\C^+$ that pairs $C'$ to $C$ is of the form
+
+      Given clines $C$ and $C'$, we'll choose the identity as the transformation from the hyperbolic group, so our canonical circle pairing function will be $T:\C^+\to\C^+$, given by
       <!-- \begin{align*}
         T_2(z) & = \left(I_{K(C_1, C_2)} \circ T_{p_1} \circ H_{r_1} \circ T_\H\circ H_{1/r_1}\circ T_{-p_1}\circ I_{C_1}\right)(z).
       \end{align*}
@@ -121,10 +138,9 @@
       $$T(z) = \left(I_{K(C, C')} \circ I_{C}\right)(z).$$
 
       <lemma>
-        The map $T$ is a $\M$-similar to $\alpha z$ for some $\alpha > 0$, $\alpha\neq 1$, and the clines $C$ and $C'$ are type II for the two fixed points of $T$.
+        The map $T$ is  $\M$-similar to $\alpha z$ for some $\alpha > 0$, $\alpha\neq 1$, and the clines $C$ and $C'$ are type II for the two fixed points of $T$.
       </lemma>
       <proof collapse="true" open="true">
-
 
       </proof>
 
@@ -134,41 +150,38 @@
 
       Schottky groups were first studied by Friedrich Schottky in 1877.
 
-      <definition title="Schottky Group <cite to='ams'></cite>">
+      <definition title="Schottky Group <cite to='ams'></cite>" id="schottky">
         A <strong>Schottky group</strong> is a Kleinian group generated by transformations $T_1,\dots, T_n$ where there are $2n$ disjoint simple loops, $C_1, C_1',\dots,C_n, C_n'$, bounding a common domain $F$ in the extended complex plane $\C^+$, where $T_i(C_i') = C_i$, and $T_i(F)\cap F=\emptyset$, $i = 1,\dots,n$.
       </definition>
 
-      For our purposes, we will assume that the loops are clines in $\C^+$. Furthermore, (like the authors of <cite to="indra"></cite>) we'll allow for the possibility that the clines in the definition above touch, but not overlap. The resulting Kleinian group is called a "kissing" Schottky Group. In this case, $F$ might not be connected!
+      For our purposes, we (like the authors of <cite to="indra"></cite>) will suppose that the loops are just non-overlapping clines in $\C^+$.
+
+      <definition title="Kissing Schottky Group <cite to='indra'></cite>" id="kissing-schottky">
+        Given a set of $2n$ non-overlapping clines $\mathcal{C}=\{C_1, C_1',\dots,C_n, C_n'\}$, a <strong>Kissing Schottky group</strong> is a Kleinian group generated by transformations $T_1,\dots, T_n$ where $T_i$ pairs $C_i'$ to $C_i$ for $i = 1,\dots,n$. Furthermore, let $D_i$ and $D_i'$ be the interiors of $C_i$ and $C_i'$, and define the <b>Fomage</b> of $\mathcal{C}$:
+        $$F=\C^+-\bigcup_{i=1}^n \overline{D_i \cup D_i'}.$$
+      </definition>
+
+      Intuitively, $F$ is the extended plane with the clines and their interiors punched out, but in this case, $F$ might not be connected! The figure below shows an example of a Fomage (in white) that is disconnected.
+
+      <img src="img/disconnected_F.svg" style="width: 400px; display: block; margin: auto;"/>
+      <center class="caption">Four non-overlapping clines that determine a disconnected Fomage</center>
+
+      However, this Fomage set does correspond to the set $F$ in definition <ref to="schottky"></ref>.
 
       The clines $C_i$ and $C_i'$ might be thought of as <em>defining clines</em> for the Schottky group, however, they do not completely determine the group. Indeed, recall from our discussion of pairing clines that any hyperbolic transformation can be inserted in between the two inversions.
 
-      Consider a set $\mathcal{C}$ of $n$ pairs of (overall) non-overlapping clines:
-      $$\mathcal{C}=\{(C_1,C_1'), \dots, (C_n,C_n')\},$$
-      and the associated set of pairing transformations (as defined earlier)
-      $$\T=\{T_1, \dots, T_n\}.$$
-      Define the "swiss cheese"-looking set
-      $$F=\C^+-\bigcup_{i=1}^n \overline{D_i \cup D_i'}$$
-      where $D_i$ and $D_i'$ are the interiors of $C_i$ and $C_i'$. Intuitively, $F$ is the extended plane with the clines and their interiors punched out.
-
-      Let $G$ be the Schottky group generated by $\T$ ($G=\langle \T\rangle$), and observe that for any $T_i,T_i'\in G$, $T_{i}\circ T\in G$ maps $F$ into (but not onto) the interior of $T(D_i)$ and similarly $T_{i}'\circ T\in G$ maps $F$ into (but not onto) the interior of $T(D_i')$. The orbit $\O_F$ of $F$ "tiles" the plane, except for the point-set boundary of $\O_F$, which is the limit set of $G$. That is,
+      Let $G$ be the Schottky group generated by $\T$ ($G=\langle \T\rangle$), and observe that for any $T_i,T_i'\in G$, $T_{i}\circ T\in G$ maps $F$ into (but not onto) the interior of $T(D_i)$ and similarly $T_{i}'\circ T\in G$ maps $F$ into (but not onto) the interior of $T(D_i')$. The orbit $\O_F$ of $F$  (called the <b>ordinary</b> or <b>regular set</b> of the group) "tiles" the plane, except for the point-set boundary of $\O_F$, which is the limit set of $G$. That is,
       $$\partial \O_F = \C^+ - \O_F.$$
 
-      The orbit $\partial \O_F$ is called the <b>ordinary</b> or <b>regular set</b> of the group. Also, due to the contstruction of $\T$, for any $T\in G$, $T(\partial \O_F) = \partial \O_F$.
+      Also, due to the contstruction of $\T$, for any $T\in G$, $T(\partial \O_F) = \partial \O_F$.
 
-      If $\partial \O_F$ is a circle then it is called <b>Fuchsian</b>; if $\partial \O_F$ is a loop, then it is called a <b>quasicircle</b>.
-
-      <definition title="Quasifuchsian Groups <cite to='indra'></cite>">
-        A Kleinian Group whose limit set is a quasicircle is called a <b>quasifuchsian group</b>.
-      </definition>
-
-      The limit sets of quasifuchsian groups separate the ordinary set into two disjoint parts.
+      If $\partial \O_F$ is a loop, then it is called a <b>quasicircle</b>; if $\partial \O_F$ is a circle then $G$ is called <b>Fuchsian</b>. A Kleinian group whose limit set is a quasicircle is called a <b>quasifuchsian group</b>. The limit sets of quasifuchsian groups separate the ordinary set into two disjoint parts.
 
       <theorem title="Necklace Conditions (Box 18 from <cite to='indra'></cite>)">
-        A Schottky Group $\langle a, b\rangle$ generated with two pairs of circles is quasifuchsian if and only if
+        A Schottky group $\langle T_1, T_2\rangle$ generated with two pairs of circles is quasifuchsian if and only if
         <ul>
           <li>the tangency points must be correctly matched by generators;</li>
-          <li>the transformation $aba^{-1}b^{-1}$ must be <span style="color: red">parabolic;</span></li>
-          <li>the trace of $aba^{-1}b^{-1}$ must be $-2$.</li>
+          <li>the trace of $T_1\circ T_2\circ T_1'\circ T_2'$ must be $-2$.</li>
         </ul>
       </theorem>
 
@@ -177,26 +190,44 @@
       <img src="img/fuchsian.svg" style="width: 400px; display: block; margin: auto;"/>
       <center class="caption">The limit set of a quasifuchsian group is a loop.</center>
 
-      <span style="color:red">Get an image of a (non-circular) quasi-circular limit set.</span>
+      Below are some more examples of limit sets of quasifucian groups.
+      <img src="img/quasifuchsian.svg" style="width: 400px; display: block; margin: auto;"/>
+      <center class="caption">A non-circular limit set of a quasifuchsian group.</center>
+
+      <img src="img/quasifuchsian2.svg" style="width: 400px; display: block; margin: auto;"/>
+      <center class="caption">Another non-circular limit set of a quasifuchsian group.</center>
 
 
       <section>Generating Images of Regular and Limit Sets</section>
 
-      Let's start with the orbit of $F$, which "tiles" the regular set: we'd like to see the outlines of the puzzle pieces. Luckily, this is pretty simple since images of $F$ are bounded by clines. One way to get a picture of $\O_F$ is to rely on the fact that groups generated by $n$ transformations can be thought of free groups on $n$ symbols: longer words in the associated free group correspond to smaller images of $F$ in the orbit. Therefore, we can do a depth-first search through the branches of the free group and prune nodes when we are deep enough down the tree and/or the circles to be plotted become too small to see.
+      Let's start with the orbit of $F$, which "tiles" the regular set: we'd like to see the outlines of the puzzle pieces. Luckily, this is pretty simple since images of $F$ are bounded by clines. One way to get a picture of $\O_F$ is to rely on the fact a group generated by $n$ transformations with no relations (our circle pairing transformations accomplish this) can be thought of as a free group on $n$ symbols: longer words in the associated free group correspond to smaller images of $F$ in the orbit. Therefore, we can do a depth-first search through the branches of the free group to generate transformations in $G$. We can prune nodes of the search (stop generating) when we reach a pre-determined depth, and/or the circles to be plotted become too small to see.
 
       This is exactly what you can do on the <a href="generator.html" class="highlight">generator page</a>. Enter a list of circles and specify pruning depths and/or circle sizes.
 
-      It is a bit trickier to explicitly plot the limit set. If we plot the tiling $\O_F$ to a significant depth, we see that the limit set is where the smallest circles accumulate, but how can we just get the limit set by itself?
+      It is a bit trickier to explicitly plot the limit set. If we plot the tiling $\O_F$ to a significant depth, we see that points in the limit set are where the smallest circles accumulate, but how can we just see the limit set by itself?
 
-      If we know a little bit about the limit set, we can cheat a bit. For example, if $\partial \O_F$ is comprised of circles, we can plot the orbit of a specially chosen few of them. That is how we get the image below of the Apollonian Gasket. This Schottky group is generated by the clines $(C_1(-1-i), C_1(1+i))$ and $(L_0(0), C_{\frac{1}{4}}(\frac{1}{4}))$, whose orbits are seen in black. Its limit set is the orbit of the circles $C_{\frac12}(\pm\frac{1}{2})$ and $C_{\frac13}(\pm\frac{2}{3})$.
+      If we know something about the limit set, we can cheat a bit. For example, if $\partial \O_F$ is comprised of circles, we can plot the orbit of a specially chosen few of them. That is how we get the image below of the Apollonian gasket (and the last image in the previous section). This Schottky group is generated by the clines $(C_1(-1-i), C_1(1+i))$ and $(\R, C_{\frac{1}{4}}\left(\frac{1}{4}\right))$, whose orbits are seen in black. Its limit set (in red and green) is the orbit of the circles $C_{\frac12}\left(\pm\frac{1}{2}\right)$ and $C_{\frac13}\left(\pm\frac{2}{3}i\right)$, which are shown in green.
 
       <img src="img/apollonian+F.svg" style="width: 400px; display: block; margin: auto;"/>
-      <center class="caption">The orbit tiling associated with an Apollonian Gasket.</center>
+      <center class="caption">The orbit tiling associated with an Apollonian gasket.</center>
+
+      The authors in <cite to="indra"></cite> provide a list of ways to computationally approximate the limit set of a Schottky group. In addition to the computational use, studying ways to approximate the limit set can facilitate a better understanding. The following notation will be useful: given $T\in G$, write $\ell(T)$ for the number of generating transformations (or their inverses) that $T$ is composed of; in other words, $\ell(T)$ is the length of the associated free group word. Also, let $G_N=\{T\in G\mid \ell(T)=N\}$.
+
+      Choose some large $N\in\N$.
+      <ol>
+        <li>Plot $T(C_i)$ and $T(C_i')$ for all $i\in\{1,\dots,n\}$ and $T\in G_N$.</li>
+        <li>Pick any point $p\in F$ and plot $T(p)$ for all $T\in G_N$.</li>
+        <li>Plot $T(f^+_i)$ for all $T\in G_N$ and attracting fixed point $f_i^+$ of generating transformation $T_i$.</li>
+        <li>Plot all fixed points of transformations $T\in G_N$.</li>
+      </ol>
+
+      As $N\to\infty$, these approximations give us $\partial\O_F$.
 
 
 
-      <span style="color:red">Use Box 14 on page 135 to prove this conjecture.</span>
 
+
+      <!-- <span style="color:red">Use Box 14 on page 135 to prove this conjecture.</span>
 
       Let $\Phi(X)$ define the fixed point set $\{p\in\C^+\mid \exists T\neq 1\in X, T(p)=p\}$.
 
@@ -204,20 +235,19 @@
         <strong>Conjecture.</strong> $\partial \O_F = \O_{\Phi(\T)} = \Phi(G)$.
       </blockquote>
 
-
-
-
-
-
-
-
-
-
       <blockquote>
         <strong>Conjecture.</strong> $\Gamma:\mathcal{K}\to\mathcal{K}$ given by $\Gamma(X)=\O_X$ is a contraction mapping with fixed point $H$.
-      </blockquote>
+      </blockquote> -->
 
-      <section>Limit Sets of Kleinian Groups</section>
+
+
+
+
+
+
+
+
+      <!-- <section>Limit Sets of Kleinian Groups</section>
 
       The study of Kleinian groups in generality started with Henri Poincaré and Felix Klein in 1883.
 
@@ -233,13 +263,15 @@
        <li>equal to $\C^+$.</li>
      </ol>
 
-     We will build to some examples of the second case, which is clearly the most interesting and (perhaps, unsurprisingly) the most beautiful.
+     We will build to some examples of the second case, which is clearly the most interesting and (perhaps, unsurprisingly) the most beautiful. -->
 
+     <section>Ongoing Research</section>
 
+      While their content is beyond the scope of this paper, we'll point to two recent publications that feature ongoing research on Schottky groups.
 
+      Oliver Jenkinson and Mark Pollicott focus on finding a new algorithm for computing and estimating the Hausdorff dimension of limit sets of quasifuchsian and Schottky groups. <cite to="qfg"></cite>
 
-
-
+      Jean-Phillippe Burelle and Nicolaus Treib study Schottky subgroups with maximal represenations of fundamental groups on bounded surfaces. <cite to="sgm"></cite>
 
 
       <references>
@@ -247,6 +279,8 @@
         <item id="indra">David Mumford, Caroline Series, and David Write. <em>Indra's Pearls: The Vision of Felix Klein</em>, 2002.</item>
         <item id="ucdavis">Michael Kapovich. <em>Kleinian Groups in Higher Dimensions</em>. Progress in Mathematics, Vol. 256, 485-562, 2007. <a class="highlight" href="https://www.math.ucdavis.edu/~kapovich/EPR/klein.pdf">https://www.math.ucdavis.edu/~kapovich/EPR/klein.pdf</a></item>
         <item id="ams">Rubén Hidalgo and Bernard Maskit. <em>On Neoclassical Schotty Groups</em>. Transations of the American Mathematical Society, Volume 358, Number 11, November 2006. <a class="highlight" href="https://www.ams.org/journals/tran/2006-358-11/S0002-9947-05-03792-X/S0002-9947-05-03792-X.pdf">https://www.ams.org/journals/tran/2006-358-11/S0002-9947-05-03792-X/S0002-9947-05-03792-X.pdf</a></item>
+        <item id="qfg">Oliver Jenkinson and Mark Pollicott. <em>Calculating Hausdorff Dimension of Julia Sets and Kleinian Limit Sets</em>. The Johns Hopkins University Press, June 2002. <a class="highlight" href="https://muse.jhu.edu/article/977/pdf">https://muse.jhu.edu/article/977/pdf</a></item>
+        <item id="sgm">Jean-Phillippe Burelle and Nicolaus Treib. <em> Schottky groups and maximal repesentations</em>. Geometriae Dedicata, Volume 195, Number 1, 2018. <a class="highlight" href="https://doi.org/10.1007/s10711-017-0285-2"></a>https://doi.org/10.1007/s10711-017-0285-2</item>
 
       </references>
 

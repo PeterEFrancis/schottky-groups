@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="662" height="302" style="
+        width:662px;
+        height:302px;
+        background: #FFF;
+        fill: none;
+">
+        <svg xmlns="http://www.w3.org/2000/svg" class="role-diagram-draw-area"><g class="shapes-region" style="stroke: black; fill: none;"><g class="composite-shape"><path class="real" d=" M106,25 L570.71,25 L570.71,280 L106,280 Z" style="stroke-width: 1; stroke: rgb(0, 0, 0); fill: none; fill-opacity: 1;"/></g><g class="composite-shape"><path class="real" d=" M106,25 L279.4,25 L279.4,280.4 L106,280.4 Z" style="stroke-width: 1; stroke: rgb(0, 0, 0); fill: rgb(128, 128, 128); fill-opacity: 1;"/></g><g class="composite-shape"><path class="real" d=" M397.31,25 L570.71,25 L570.71,280.4 L397.31,280.4 Z" style="stroke-width: 1; stroke: rgb(0, 0, 0); fill: rgb(128, 128, 128); fill-opacity: 1;"/></g><g class="composite-shape"><path class="real" d=" M280.23,94.37 C280.23,62.27 306.25,36.24 338.36,36.24 C370.46,36.24 396.49,62.27 396.49,94.37 C396.49,126.47 370.46,152.5 338.36,152.5 C306.25,152.5 280.23,126.47 280.23,94.37 Z" style="stroke-width: 1; stroke: rgb(0, 0, 0); fill: rgb(128, 128, 128); fill-opacity: 1;"/></g><g class="composite-shape"><path class="real" d=" M280.14,210.24 C280.14,178.14 306.17,152.11 338.27,152.11 C370.37,152.11 396.4,178.14 396.4,210.24 C396.4,242.35 370.37,268.37 338.27,268.37 C306.17,268.37 280.14,242.35 280.14,210.24 Z" style="stroke-width: 1; stroke: rgb(0, 0, 0); fill: rgb(128, 128, 128); fill-opacity: 1;"/></g><g/></g><g/><g/><g/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="660" height="300" style="width:660px;height:300px;font-family:Asana-Math, Asana;background:#FFF;"></svg>
+</svg>
