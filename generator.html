@@ -81,7 +81,15 @@
 
     function make_schottky_image() {
 
-      let input_circles = document.getElementById('input').value.trim().split('\n').map(line => line.split(';').map(list => JSON.parse(list.trim())));
+      let input_circles = document.getElementById('input').value
+        .replaceAll(' .', '0.')
+        .replaceAll('-.', '-0.')
+        .replaceAll('[.', '[0.')
+        .replaceAll(',.', ',0.')
+        .trim()
+        .split('\n')
+        .map(line => line.split(';')
+        .map(list => JSON.parse(list.trim())));
 
       let smallest_radius = Number(document.getElementById('smallest-radius').value.trim());
       let depth = Number(document.getElementById('depth').value.trim());
