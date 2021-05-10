@@ -53,13 +53,22 @@
         \newcommand{\O}{\mathcal{O}}
         \newcommand{\H}{\mathcal{H}}
         \newcommand{\M}{\mathcal{M}}
+        \newcommand{\Tr}{\text{Tr}}
       \)
       </div>
 
       <h1 style="text-align: center">The Beauty of Schottky Groups</h1>
+      <br style="height: 30px">
       <em style="display: block; text-align: center">Katelin P. Beach and Peter E. Francis</em>
+      <br>
+      <center>Department of Mathematics, Gettysburg College</center>
+      <center>Gettysburg, PA 17325-1486 USA</center>
+      <center>E-mails: {beacka03, franpe02}@gettysburg.edu</center>
 
-      <abstract>Möbius Transformations are a convinent group of maps to study in an introductory course on trasnformational geometry. We will explore a specific kind of subgroup of Möbius transformations and how they are used to make fractal-like images.</abstract>
+      <center>May 9, 2021</center>
+      <br style="height: 30px">
+
+      <abstract>Möbius transformations are a convenient group of maps to study. We will explore a specific kind of Möbius transformation used to generate particular discrete subgroups of Möbius transformations called Schottky Groups. We will then use Schottky Groups to explain and make fractal-like images out of circles.</abstract>
 
       <hr>
       <tableofcontents></tableofcontents>
@@ -78,7 +87,54 @@
       $$T(z)=\frac{az+b}{cz+d}$$
       for complex constants $a, b, c, d\in\C$ satisfying $ab-cd\neq 0$. These transformations form the Möbius group $\M$.
 
+      There is a convenient way to classify non-identity Möbius transformations $T$.
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Classification</th>
+            <th>Trace</th>
+            <th>$\M$-similarity</th>
+            <th>Number of fixed points</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Elliptic</th>
+            <td>$\Tr(T)\in\R$, $|\Tr(T)|< 2$</td>
+            <td>$\alpha z$, $\alpha\in\C$, $|\alpha|=1$</td>
+            <td>2</td>
+            <td>$T$ pushes points along type II clines for its fixed points.</td>
+          </tr>
+          <tr>
+            <th>Parabolic</th>
+            <td>$\Tr(T)=\pm 2$</td>
+            <td>$z+\alpha$, $\alpha\in\C$</td>
+            <td>1</td>
+            <td>$T$ pushes points along a family of clines that are mutually tangent at its fixed point.</td>
+          </tr>
+          <tr>
+            <th>Hyperbolic</th>
+            <td>$\Tr(T)\in\R$, $|\Tr(T)|>2$</td>
+            <td>$\alpha z$, $\alpha\in\R$, $\alpha>0$</td>
+            <td>2</td>
+            <td>$T$ pushes points along type I clines for its fixed points.</td>
+          </tr>
+          <tr>
+            <th>Loxodromic</th>
+            <td>$|\Tr(T)|\neq 2$</td>
+            <td>$\alpha z$, $\alpha\in\C$, $\alpha\neq 0$</td>
+            <td>2</td>
+            <td>$T$ pushes points along type I and type II clines for its fixed points; points spiral out from one fixed point and spiral toward the other.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      Note that hyperbolic and elliptic transformations are special cases of loxodromic maps.
+
+
       It turns out that the key to understanding pictures like the Apollonian gasket above is to study specific subgroups of $\M$. <b>Kleinian groups</b> are discrete subgroups of $\M$, and these groups are studied in generality, but we'll focus on a particular kind of Kleinian group called Shottky groups, which are easier to define in the context of an introductory course in transformational geometry.
+
 
       <section id="pairing-clines">Pairing Clines</section>
 
@@ -130,18 +186,39 @@
         <li>Invert over the cline $K(C,C')$.</li>
       </ul>
 
-      Given clines $C$ and $C'$, we'll choose the identity as the transformation from the hyperbolic group, so our canonical circle pairing function will be $T:\C^+\to\C^+$, given by
+      Given clines $C$ and $C'$, we'll choose the identity as the transformation from the hyperbolic group, so our canonical circle pairing function will be
+      $$T = I_{K(C, C')} \circ I_{C}.$$
+      <!-- $T:\C^+\to\C^+$, given by -->
       <!-- \begin{align*}
         T_2(z) & = \left(I_{K(C_1, C_2)} \circ T_{p_1} \circ H_{r_1} \circ T_\H\circ H_{1/r_1}\circ T_{-p_1}\circ I_{C_1}\right)(z).
       \end{align*}
       Yikes. For right now, we'll consider the case when $T_\H$ is the identity, so -->
-      $$T(z) = \left(I_{K(C, C')} \circ I_{C}\right)(z).$$
 
       <lemma>
-        The map $T$ is  $\M$-similar to $\alpha z$ for some $\alpha > 0$, $\alpha\neq 1$, and the clines $C$ and $C'$ are type II for the two fixed points of $T$.
+        If $C$ and $C'$ are circles, then the map $T$ is hyperbolic if they are non-intersecting, and parabolic if they are kissing.
+        <!-- $\M$-similar to $\alpha z$ for some $\alpha > 0$, $\alpha\neq 1$, and the clines $C$ and $C'$ are type II for the two fixed points of $T$. -->
       </lemma>
       <proof collapse="true" open="true">
+        So, we can assume without loss of generality that $K(C,C')$ is centered at the origin with radius $r$, and that $C$ is centered at $p\in\R$, $p\geq 0$ with radius $s$. Then $T$ is easily given by
+        $$T(z)=(I_K\circ I_C)(z)=\frac{r^2z-r^2p}{pz+s^2-p^2},$$
+        and has trace
+        <!-- $$\frac{1}{rs}\begin{pmatrix}r^2 & -r^2p\\ p & r^2-p^2\end{pmatrix},$$ -->
+        $$\Tr(T)=\frac{r^2+s^2-p^2}{rs}.$$
+        By adding $2rs-2rs$ to the numerator of the expression above, we can find that
+        $$-2+\frac{(r+s)^2-p^2}{rs}=\Tr(T)=2+\frac{(r-s)^2-p^2}{rs}.$$
+        <ol>
+          <li>If $p>r+s$ then $C$ and $K$ are non-overlapping, and $|\Tr(T)|> 2$, so $T$ is hyperbolic.</li>
+          <li>If $p<|r-s|$, then $C$ is contained in the interior of $K$ and $|\Tr(T)|> 2$, so $T$ is hyperbolic.</li>
+          <li>If $p=r+s$, then $C$ is tangent to $K$ in its exterior, and $\Tr(T)=-2$, so $T$ is parabolic.</li>
+          <li>If $p=|r-s|$, then $C$ is tangent to $K$ in its interior, and $\Tr(T)=2$, so $T$ is parabolic.</li>
+          <li>If $|r-s| < p < r+s$, then $K$ and $C$ intersect twice, and $|\Tr(T)| < 2$, so $T$ is elliptic.</li>
+        </ol>
 
+        Case 5 is impossible since if $K$ and $C$ intersect twice, then $C$ and $C'$ intersect twice, so they are non-overlapping.
+
+        If $C$ and $C'$ are non-intersecting, then $K$ will not intersect either, so we are in cases 1 and 2; $T$ is hyperbolic.
+
+        If $C$ and $C'$ are kissing, then $K$ will be tangent to $C$ and $C'$ at the kissing point, so we are in cases 3 and 4; $T$ is parabolic.
       </proof>
 
 
@@ -166,7 +243,7 @@
       <img src="img/disconnected_F.svg" style="width: 400px; display: block; margin: auto;"/>
       <center class="caption">Four non-overlapping clines that determine a disconnected Fomage</center>
 
-      However, this Fomage set does correspond to the set $F$ in definition <ref to="schottky"></ref>.
+      However, this Fomage set does correspond to the set $F$ in definition <ref to="schottky"></ref>. Indeed, if the $2n$ clines are in fact nin-intersecting, then the condition that they are non-overlapping implies that they bound a common domain; the fomage set defined in definition <ref to="kissing-schottky"></ref> is exactly the set $F$ defined in definition <ref to="schottky"></ref>.
 
       The clines $C_i$ and $C_i'$ might be thought of as <em>defining clines</em> for the Schottky group, however, they do not completely determine the group. Indeed, recall from our discussion of pairing clines that any hyperbolic transformation can be inserted in between the two inversions.
 
@@ -174,6 +251,12 @@
       $$\partial \O_F = \C^+ - \O_F.$$
 
       Also, due to the contstruction of $\T$, for any $T\in G$, $T(\partial \O_F) = \partial \O_F$.
+
+      Below we have an example of a Schottky group (with two generators) tiling of the extended plane. The colors of the tiles correspond to the "depth" of the composition (length of corresponding word in the free group).
+
+
+      <img src="img/F_tiles.svg" style="width: 400px; display: block; margin: auto;"/>
+      <center class="caption">$F$, in black, and various images of $F$ in $\O_F$, colored according to "depth".</center>
 
       If $\partial \O_F$ is a loop, then it is called a <b>quasicircle</b>; if $\partial \O_F$ is a circle then $G$ is called <b>Fuchsian</b>. A Kleinian group whose limit set is a quasicircle is called a <b>quasifuchsian group</b>. The limit sets of quasifuchsian groups separate the ordinary set into two disjoint parts.
 
@@ -206,10 +289,16 @@
 
       It is a bit trickier to explicitly plot the limit set. If we plot the tiling $\O_F$ to a significant depth, we see that points in the limit set are where the smallest circles accumulate, but how can we just see the limit set by itself?
 
-      If we know something about the limit set, we can cheat a bit. For example, if $\partial \O_F$ is comprised of circles, we can plot the orbit of a specially chosen few of them. That is how we get the image below of the Apollonian gasket (and the last image in the previous section). This Schottky group is generated by the clines $(C_1(-1-i), C_1(1+i))$ and $(\R, C_{\frac{1}{4}}\left(\frac{1}{4}\right))$, whose orbits are seen in black. Its limit set (in red and green) is the orbit of the circles $C_{\frac12}\left(\pm\frac{1}{2}\right)$ and $C_{\frac13}\left(\pm\frac{2}{3}i\right)$, which are shown in green.
+      If we know something about the limit set, we can cheat a bit. For example, if $\partial \O_F$ is comprised of circles, we can plot the orbit of a specially chosen few of them. That is how we get the image below of an Apollonian gasket (and the last image in the previous section). This Schottky group is generated by the clines $(C_1(-1-i), C_1(1+i))$ and $(\R, C_{\frac{1}{4}}\left(\frac{1}{4}\right))$, which are disaplyed in blue and whose orbits are seen in black. Its limit set (in red and green) is the orbit of the circles $C_{\frac12}\left(\pm\frac{1}{2}\right)$ and $C_{\frac13}\left(\pm\frac{2}{3}i\right)$, which are shown in green.
 
       <img src="img/apollonian+F.svg" style="width: 400px; display: block; margin: auto;"/>
-      <center class="caption">The orbit tiling associated with an Apollonian gasket.</center>
+      <center class="caption">Outline of tiles for the Fomage set associated with an Apollonian gasket.</center>
+
+      As we did earlier, we can color the images of $F$ in $\O_F$ to show the tiling more clearly. The gasket limit set "glows" in the plot below.
+
+      <img src="img/coloredgasket.svg" style="width: 400px; display: block; margin: auto;"/>
+      <center class="caption">A colored orbit tiling associated with an Apollonian gasket.</center>
+
 
       The authors in <cite to="indra"></cite> provide a list of ways to computationally approximate the limit set of a Schottky group. In addition to the computational use, studying ways to approximate the limit set can facilitate a better understanding. The following notation will be useful: given $T\in G$, write $\ell(T)$ for the number of generating transformations (or their inverses) that $T$ is composed of; in other words, $\ell(T)$ is the length of the associated free group word. Also, let $G_N=\{T\in G\mid \ell(T)=N\}$.
 
@@ -224,6 +313,14 @@
       As $N\to\infty$, these approximations give us $\partial\O_F$.
 
 
+      As a notable and parting example, we encourage you test out the following circles on the generator page.
+
+      <img src="img/E1.svg" style="width: 400px; display: block; margin: auto;"/>
+      <center class="caption"><pre>
+[[-10001, 0], 10000]; [[10001, 0], 10000]
+[[0, -1], 1]; [[0, 1], 1]
+[[-0.75, 0], 0.25]; [[0.75, 0], 0.25]
+      </pre></center>
 
 
 
@@ -275,6 +372,7 @@
 
 
       <references>
+        <item id="keir">Keir Lockridge, Personal communication, 2021.</item>
         <item id="springer"><em>Kleinian group</em>, Encyclopedia of Mathematics, Springer. <a class="highlight" href="http://encyclopediaofmath.org/index.php?title=Kleinian_group&oldid=47504">http://encyclopediaofmath.org/index.php?title=Kleinian_group&oldid=47504</a></item>
         <item id="indra">David Mumford, Caroline Series, and David Write. <em>Indra's Pearls: The Vision of Felix Klein</em>, 2002.</item>
         <item id="ucdavis">Michael Kapovich. <em>Kleinian Groups in Higher Dimensions</em>. Progress in Mathematics, Vol. 256, 485-562, 2007. <a class="highlight" href="https://www.math.ucdavis.edu/~kapovich/EPR/klein.pdf">https://www.math.ucdavis.edu/~kapovich/EPR/klein.pdf</a></item>
